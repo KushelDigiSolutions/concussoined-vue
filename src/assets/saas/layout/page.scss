@@ -1,0 +1,31 @@
+#pagecontent {
+    display:flex;
+    flex-direction:column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+    .scroll {
+        padding:3rem;
+    }
+    header {
+        display:flex;
+        flex-direction:row;
+        justify-content: space-between;
+        align-items: center;
+        width:100%;
+        padding-right:1.25rem;
+        margin-bottom:2rem;
+    }
+    .sections-list {
+        width:100%;
+        .list-group-item {
+            display:flex;
+            flex-direction:row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .action {
+            margin-left: auto;
+        }
+    }
+}

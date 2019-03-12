@@ -47,18 +47,32 @@ select {
     border-radius: 3px;
     padding:5px 15px;
     color:#fff;
-    font-weight:700;
+    // font-weight:700;
     &:hover {
         color:#fff;
         background:$color-green;
     }
     &.icon {
-        display:flex;
+        display:inline-flex;
         flex-direction:row;
         justify-content:flex-start;
         align-items: center;
         span {
             margin-left:10px;
+        }
+    }
+    &.btn-blue {
+        background:$color-blue;
+        &:hover {
+            color:#fff;
+            background:$color-darkblue;
+        }
+    }
+    &.btn-dark-blue {
+        background:$color-darkblue;
+        &:hover {
+            color:#fff;
+            background:$color-blue;
         }
     }
 }

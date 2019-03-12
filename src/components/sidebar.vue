@@ -6,7 +6,7 @@
             <nav>
                 <ul>
                     <li>
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" :class="{'active': $route.name == 'sections'}">
                             <font-awesome-icon icon="list-alt" />
                             Sections
                         </a>
@@ -50,14 +50,14 @@ export default {
     name: 'pagesidebar',
     data: function () {
         return {
-            
+
         }
     },
     mounted: function() {
-        
+
     },
     methods: {
-   
+
     }
 }
 </script>
