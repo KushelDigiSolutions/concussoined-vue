@@ -35,23 +35,17 @@ export default {
         localStorage.lang.length == 0 ? localStorage.lang = 'en' : ''
         if(this.localStorage.token) { // token validation
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-            this.axios.get(process.env.VUE_APP_URL+'profiles')
-            .then(response => {
-                this.$router.push({path:'/'})
-            })
-            .catch(error => {
-                this.localStorage.token = ''
-            });
+            this.checkAdmin()
         }
     },
     methods: {
+        // form validation and submit
         validateForm: function(){
             this.errEmail = false
             this.errPassword = false
             this.errCpassword = false
             this.errTitle = ''
             this.errMsg = ''
-            // form validation
             if(!this.signup) {
                 if(this.email == '' || !this.reg.test(this.email)) {
                     this.errEmail = true
@@ -71,26 +65,40 @@ export default {
                     this.axios.post(process.env.VUE_APP_URL+'login',{email: this.email, password: this.password})
                     .then(response => {
                         localStorage.token = 'Bearer ' + response.data.token
-                        this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-                        this.$router.push({path:'/'})
+                        this.checkAdmin()
                     })
                     .catch(error => {
-                        this.$toast.error({
-                            title:'Login Failure',
-                            message: 'Invalid email or password',
-                            position: 'top right',
-                            timeOut: 5000
-                        })
+                        this.showError('Login Failure', 'Invalid email or password')
                     })
                 }
             } else { // displaying validation error msg
-                this.$toast.error({
-                    title:this.errTitle,
-                    message: this.errMsg,
-                    position: 'top right',
-                    timeOut: 5000
-                })
+                this.showError(this.errTitle, this.errMsg)
             }
+        },
+        // checking if user is admin
+        checkAdmin: function() {
+            this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+            this.axios.get(process.env.VUE_APP_URL+'admin_check')
+            .then(response => {
+                if(response.data == '1') {
+                    this.$router.push({path:'/'})
+                } else {
+                    localStorage.token = ''
+                    this.axios.defaults.headers.common['Authorization'] = ''
+                    this.showError('Login Failure', 'You are not authorized to access this site')
+                }
+            })
+            .catch(error => {
+                this.showError('Login Failure', 'Invalid email or password')
+            })
+        },
+        showError: function(title, msg) {
+            this.$toast.error({
+                title:title,
+                message:msg,
+                position: 'top right',
+                timeOut: 5000
+            })
         }
     }
 }
