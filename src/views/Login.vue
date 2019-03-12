@@ -32,7 +32,6 @@ export default {
         }
     },
     beforeMount: function () {
-        localStorage.lang.length == 0 ? localStorage.lang = 'en' : ''
         if(this.localStorage.token) { // token validation
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.checkAdmin()
