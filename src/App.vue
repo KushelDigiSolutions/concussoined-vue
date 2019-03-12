@@ -1,29 +1,26 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+	<div class="page">
+		<pageheader v-if="$route.name != 'login'"/>
+		<main v-if="$route.name != 'login'">
+			<pagesidebar/>
+			<router-view/>
+		</main>
+		<main v-if="$route.name == 'login'">
+			<router-view/>
+		</main>
+		<pagefooter v-if="$route.name != 'login'"/>
+	</div>
 </template>
-
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import Vue from "vue"
+import pageheader from "./components/header"
+import pagefooter from "./components/footer"
+import pagesidebar from "./components/sidebar"
+export default {
+	components: {
+		pageheader,
+		pagefooter,
+		pagesidebar
+	}
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+</script>

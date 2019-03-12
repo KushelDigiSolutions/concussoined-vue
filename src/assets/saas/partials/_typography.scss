@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size:14px;
+    font-weight:400;
+    color:$color-black;
+}
+h1 {
+    font-size:1.4em;
+    color:$color-black;
+    font-weight: 700;
+    &.page-title {
+        padding:15px 15px 0 15px;
+    }
+}
+h2 {
+    font-size:1.4em;
+    color:$color-black;
+    font-weight: 700;
+    margin-bottom: 1em;
+}

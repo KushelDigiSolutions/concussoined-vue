@@ -1,0 +1,64 @@
+input[type="text"], input[type="password"], input[type="email"], select, textarea {
+    height:42px;
+    background:#fff;
+    border:$form-input-border 1px solid;
+    padding:10px 12px;
+    box-shadow:none !important;
+    outline: none !important;
+    &:active, &:focus {
+        box-shadow:none !important;
+        outline: none !important;
+    }
+    &::placeholder {
+        color: $form-input-placeholder;
+        font-weight:700;
+        opacity: 1;
+    }
+
+    &:-ms-input-placeholder {
+        color: $form-input-placeholder;
+        font-weight:700;
+    }
+
+    &::-ms-input-placeholder {
+        color: $form-input-placeholder;
+        font-weight:700;
+    }
+    &.error {
+        border-color:$slider-red;
+    }
+    &.full-width {
+        width:100%;
+    }
+}
+label {
+    display:block;
+    margin-bottom: 5px;
+}
+select {
+    text-transform: capitalize;
+    option {
+        text-transform: capitalize;
+    }
+}
+.btn {
+    background:$btn-green;
+    border:none;
+    border-radius: 3px;
+    padding:5px 15px;
+    color:#fff;
+    font-weight:700;
+    &:hover {
+        color:#fff;
+        background:$color-green;
+    }
+    &.icon {
+        display:flex;
+        flex-direction:row;
+        justify-content:flex-start;
+        align-items: center;
+        span {
+            margin-left:10px;
+        }
+    }
+}
