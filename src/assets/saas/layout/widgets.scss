@@ -1,0 +1,44 @@
+#widgetList {
+    .list-group {
+        .list-group-item {
+            padding:0;
+            display:flex;
+            flex-direction:row;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: .25rem;
+            margin-bottom: .45rem;
+            cursor:move;
+            .info {
+                display:flex;
+                flex-direction:row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            .widget-type {
+                height:40px;
+                width:100px;
+                padding:0 .75rem;
+                text-align:center;
+                background:$btn-green;
+                display:flex;
+                flex-direction:row;
+                justify-content: flex-start;
+                align-items: center;
+                span {
+                    margin-left:10px;
+                }
+            }
+            .widget-info {
+                margin-left:10px;
+            }
+        }
+    }
+    .flip-list-move {
+        transition: transform 0.5s;
+    }
+    .sortable-ghost {
+        opacity: 0.5;
+        background:$form-input-placeholder;
+    }
+}

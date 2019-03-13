@@ -19,7 +19,8 @@
     "popper.js": "^1.14.7",
     "vue": "^2.6.6",
     "vue-axios": "^2.1.4",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuedraggable": "^2.19.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",

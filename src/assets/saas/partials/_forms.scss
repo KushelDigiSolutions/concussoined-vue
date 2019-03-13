@@ -75,4 +75,11 @@ select {
             background:$color-blue;
         }
     }
+    &.btn-red {
+        background:$color-darkred;
+        &:hover {
+            color:#fff;
+            background:$slider-red;
+        }
+    }
 }

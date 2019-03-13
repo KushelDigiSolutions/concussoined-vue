@@ -3,24 +3,29 @@
 		<div class="scroll">
 			<header>
 				<h1>Sections</h1>
-				<a href="#" class="btn icon">
+				<!-- <a href="#" class="btn icon">
 					<font-awesome-icon icon="plus" />
 					<span>Add New</span>
-				</a>
+				</a> -->
 			</header>
 			<section class="sections-list">
 				<div class="list-group">
 					<div class="list-group-item" v-for="section in sections" :key="section.id">
-						<span class="p-2 d-inline-block">{{section.title}}</span>
+						<span class="p-2 d-inline-block">
+							{{section.title}}
+							<template v-if="section.primary == '1'">
+								<sup class="primary">primary</sup>
+							</template>
+						</span>
 						<span class="action">
-							<a href="#" class="btn btn-blue icon mr-3">
+							<button class="btn btn-blue icon mr-3" @click="$router.push({name:'editSection', params:{name:section.name}})">
 								<font-awesome-icon icon="pencil-alt" />
 								<span>Edit</span>
-							</a>
-							<a href="#" class="btn btn-dark-blue icon">
+							</button>
+							<button class="btn btn-red icon">
 								<font-awesome-icon icon="trash-alt" />
 								<span>Delete</span>
-							</a>
+							</button>
 						</span>
 					</div>
 				</div>

@@ -6,7 +6,7 @@
             <nav>
                 <ul>
                     <li>
-                        <a href="#" class="nav-link" :class="{'active': $route.name == 'sections'}">
+                        <a href="#" class="nav-link" :class="{'active': $route.name == 'sections' || $route.name == 'editSection'}" @click="$router.push({name:'sections'})">
                             <font-awesome-icon icon="list-alt" />
                             Sections
                         </a>
