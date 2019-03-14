@@ -4,6 +4,7 @@ import Login from './views/Login.vue'
 import Sections from './views/Sections.vue'
 import editSection from './views/sections/editSection.vue'
 import editTextWidget from './views/widgets/edit/textcontent.vue'
+import editVideoWidget from './views/widgets/edit/video.vue'
 
 Vue.use(Router)
 
@@ -32,6 +33,12 @@ export default new Router({
       name: 'edit-textcontent',
       component: editTextWidget,
       props: true
-    }
+    },
+    {
+      path: '/widget/video/:id',
+      name: 'edit-videowidget',
+      component: editVideoWidget,
+      props: true
+    },
   ]
 })
