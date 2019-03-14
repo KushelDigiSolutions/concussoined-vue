@@ -77,7 +77,6 @@ Vue.use(CxltToastr)
 
 export default {
     name: 'editSection',
-    props:['name'],
     components: {
         widgetlist
     },

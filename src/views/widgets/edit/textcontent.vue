@@ -60,7 +60,6 @@ Vue.config.productionTip = false
 Vue.use(CxltToastr, CKEditor)
 export default {
     name: 'editWidget',
-    props:['type','id'],
     components: {
         ckeditor: CKEditor.component
     },
@@ -90,14 +89,14 @@ export default {
         // getting widget
 		getWidgetData: function() {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-            this.axios.get(process.env.VUE_APP_URL+'text_content/'+this.id)
+            this.axios.get(process.env.VUE_APP_URL+'text_content/'+this.$route.params.id)
             .then(response => {
                 this.widget = response.data
             })
         },
         updateWidget: function(){
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-            this.axios.patch(process.env.VUE_APP_URL+'text_content/'+this.id, {
+            this.axios.patch(process.env.VUE_APP_URL+'text_content/'+this.$route.params.id, {
                 title_en: this.widget.title_en,
                 content_en: this.widget.content_en,
                 title_fr: this.widget.title_fr,

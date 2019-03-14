@@ -65,7 +65,6 @@ Vue.config.productionTip = false
 Vue.use(CxltToastr)
 export default {
     name: 'editWidget',
-    props:['type','id'],
     beforeRouteEnter(to, from, next) {
         next(vm => {
             vm.prevRoute = from.path
@@ -90,7 +89,7 @@ export default {
         // getting widget
 		getWidgetData: function() {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-            this.axios.get(process.env.VUE_APP_URL+'video/'+this.id)
+            this.axios.get(process.env.VUE_APP_URL+'video/'+this.$route.params.id)
             .then(response => {
                 this.widget = response.data
             })
@@ -98,7 +97,7 @@ export default {
         // sending data to the server
         updateWidget: function(){
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-            this.axios.patch(process.env.VUE_APP_URL+'video/'+this.id, {
+            this.axios.patch(process.env.VUE_APP_URL+'video/'+this.$route.params.id, {
                 language: this.widget.language,
                 title: this.widget.title,
                 video: this.widget.video
