@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <span class="action">
-                        <button class="btn btn-blue icon mr-3" @click="$router.push({name:'editSection', params:{name:section.name}})">
+                        <button class="btn btn-blue icon mr-3" @click="$router.push({name:'edit-'+w.type, params:{type:w.type,id:w.id}})">
                             <font-awesome-icon icon="pencil-alt" />
                             <span>Edit</span>
                         </button>

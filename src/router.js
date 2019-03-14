@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from './views/Login.vue'
 import Sections from './views/Sections.vue'
 import editSection from './views/sections/editSection.vue'
+import editTextWidget from './views/widgets/edit/textcontent.vue'
 
 Vue.use(Router)
 
@@ -24,6 +25,12 @@ export default new Router({
       path: '/section/:name',
       name: 'editSection',
       component: editSection,
+      props: true
+    },
+    {
+      path: '/widget/textcontent/:id',
+      name: 'edit-textcontent',
+      component: editTextWidget,
       props: true
     }
   ]
