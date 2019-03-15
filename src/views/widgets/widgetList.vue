@@ -106,7 +106,7 @@ export default {
                         break;
                 }
                 this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-                this.axios.patch(process.env.VUE_APP_URL+url+'/'+widget.id,{index:index})
+                this.axios.patch(process.env.VUE_APP_URL+url+'/'+param,{index:index})
             })
         }
 	}

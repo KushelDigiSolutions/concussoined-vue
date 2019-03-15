@@ -6,6 +6,7 @@ import editSection from './views/sections/editSection.vue'
 import editTextWidget from './views/widgets/edit/textcontent.vue'
 import editVideoWidget from './views/widgets/edit/video.vue'
 import editGalleryWidget from './views/widgets/edit/gallery.vue'
+import editSubsectionWidget from './views/widgets/edit/subsection.vue'
 
 Vue.use(Router)
 
@@ -45,6 +46,12 @@ export default new Router({
       path: '/widget/gallery/:id',
       name: 'edit-gallerywidget',
       component: editGalleryWidget,
+      props: true
+    },
+    {
+      path: '/widget/subsection/:id',
+      name: 'edit-subsectionwidget',
+      component: editSubsectionWidget,
       props: true
     },
   ]
