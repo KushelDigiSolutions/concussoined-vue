@@ -102,6 +102,7 @@ export default {
 	methods: {
         // getting section data
 		getSection: function() {
+            this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
 			this.axios.get(process.env.VUE_APP_URL+'section/'+this.$route.params.name, {params:{name:this.$route.params.name,language:'en'}})
 			.then(response => {
                 this.section.titleEN = response.data.title

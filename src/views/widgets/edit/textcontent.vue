@@ -1,5 +1,5 @@
 <template>
-    <main id="pagecontent">
+    <main class="pagecontent">
 		<div class="scroll">
 			<header class="full-width">
 				<h1>Edit Widget</h1>
