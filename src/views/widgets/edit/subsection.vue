@@ -22,8 +22,8 @@
                             <input type="text" id="title" v-model="widget.title_en" placeholder="Widget Title">
                         </div>
                         <div class="form-group mt-4">
-                            <label>Widget Content(EN):</label>
-                            <ckeditor :editor="editor" v-model="widget.content_en" :config="editorConfig"></ckeditor>
+                            <label for="desc_en">Subsection Description(EN):</label>
+                            <textarea id="desc_en" class="form-control" v-model="description_en"></textarea>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
@@ -32,8 +32,8 @@
                             <input type="text" id="title" v-model="widget.title_fr" placeholder="Widget Title">
                         </div>
                         <div class="form-group mt-4">
-                            <label>Widget Content(FR):</label>
-                            <ckeditor :editor="editor" v-model="widget.content_fr" :config="editorConfig"></ckeditor>
+                            <label for="desc_fr">Subsection Description(EN):</label>
+                            <textarea id="desc_fr" class="form-control" v-model="description_fr"></textarea>
                         </div>
                     </div>
                 </div>
@@ -48,8 +48,6 @@ import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faSyncAlt, faBan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import CKEditor from '@ckeditor/ckeditor5-vue'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 library.add(faSyncAlt, faBan)
 
@@ -57,12 +55,9 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 
-Vue.use(CxltToastr, CKEditor)
+Vue.use(CxltToastr)
 export default {
-    name: 'editWidget',
-    components: {
-        ckeditor: CKEditor.component
-    },
+    name: 'editSubsection',
 	data: function () {
 		return {
             ps:null,
@@ -89,7 +84,7 @@ export default {
         // getting widget
 		getWidgetData: function() {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-            this.axios.get(process.env.VUE_APP_URL+'subsection/'+this.$route.params.id)
+            this.axios.get(process.env.VUE_APP_URL+'subsection/all/'+this.$route.params.id)
             .then(response => {
                 this.widget = response.data
             })

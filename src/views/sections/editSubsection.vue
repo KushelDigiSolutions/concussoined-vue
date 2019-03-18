@@ -2,7 +2,7 @@
 	<main class="pagecontent">
 		<div class="scroll">
 			<header class="full-width">
-				<h1>Edit Section</h1>
+				<h1>Edit Subsection</h1>
                 <div class="actions">
                     <button class="btn icon mr-3" @click="updateSection()">
                         <font-awesome-icon icon="sync-alt" />
@@ -16,31 +16,24 @@
 			</header>
 			<section class="edit-section">
                 <div class="row">
-                    <div class="col-md-12 col-lg-2 mb-3">
-                        <label>Icon(SVG):</label>
-                        <div class="section-ico clickable">
-                            <div class="preview" v-html="section.svg"></div>
-                            <input type="file" accept=".svg" @change="onFileChanged">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group">
+                            <label for="title">Title(EN):</label>
+                            <input type="text" id="title" v-model="subsection.titleEN" placeholder="Section Title">
+                        </div>
+                        <div class="form-group">
+                            <label for="desc_en">Subsection Description(EN):</label>
+                            <textarea id="desc_en" class="full-width" v-model="subsection.descriptionEN"></textarea>
                         </div>
                     </div>
-                    <div class="col-md-12 col-lg-10">
-                        <div class="row">
-                            <div class="col-md-12 col-lg-6">
-                                <div class="form-group">
-                                    <label for="title">Title(EN):</label>
-                                    <input type="text" id="title" v-model="section.titleEN" placeholder="Section Title">
-                                </div>
-                            </div>
-                            <div class="col-md-12 col-lg-6">
-                                <div class="form-group">
-                                    <label for="title">Title(FR):</label>
-                                    <input type="text" id="title" v-model="section.titleFR" placeholder="Section Title">
-                                </div>
-                            </div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group">
+                            <label for="title">Title(FR):</label>
+                            <input type="text" id="title" v-model="subsection.titleFR" placeholder="Section Title">
                         </div>
-                        <div class="checkboxes pt-2">
-                            <input class="form-check-input" type="checkbox" id="primary" v-model="section.primary">
-                            <label class="form-check-label" for="primary">Primary Section</label>
+                        <div class="form-group">
+                            <label for="desc_en">Subsection Description(FR):</label>
+                            <textarea id="desc_en" class="full-width" v-model="subsection.descriptionFR"></textarea>
                         </div>
                     </div>
                 </div>
@@ -83,14 +76,14 @@ export default {
 	data: function () {
 		return {
 			ps:null,
-            section:
+            subsection:
                 {
-                    id: '',
+                    parent_id: '',
                     name: '',
                     titleEN: '',
                     titleFR: '',
-                    svg:'',
-                    primary: false
+                    descriptionEN: '',
+                    descriptionFR: ''
                 },
             widgets:[],
             update:false
@@ -103,18 +96,18 @@ export default {
         // getting section data
 		getSection: function() {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-			this.axios.get(process.env.VUE_APP_URL+'section/'+this.$route.params.name, {params:{name:this.$route.params.name,language:'en'}})
+			this.axios.get(process.env.VUE_APP_URL+'subsection/all/'+this.$route.params.id)
 			.then(response => {
-                this.section.titleEN = response.data.title
-                this.section.svg = response.data.svg
-                this.section.id = response.data.id
-                this.section.name = response.data.name
-                response.data.primary == '1' ? this.section.primary = true : this.section.primary = false
-                this.axios.get(process.env.VUE_APP_URL+'section/'+this.$route.params.name, {params:{name:this.$route.params.name,language:'fr'}})
+                this.subsection.titleEN = response.data.title_en
+                this.subsection.titleFR = response.data.title_fr
+                this.subsection.descriptionEN = response.data.description_en
+                this.subsection.descriptionFR = response.data.description_fr
+                this.subsection.parent_id = response.data.id
+                this.subsection.name = response.data.name
+                this.axios.get(process.env.VUE_APP_URL+'subsection/'+this.subsection.name, {params:{name:this.subsection.name,language:'en'}})
                 .then(response => {
-                    this.section.titleFR = response.data.title
+                    this.prepareComponents(response.data)
                 })
-                this.prepareComponents(response.data)
             })
         },
         // making widgets array
@@ -169,31 +162,19 @@ export default {
 				this.perfectScrollInit()
 			})
 		},
-        // storing svg for upload
-        onFileChanged (event) {
-            let reader = new FileReader()
-            var self = this
-            reader.readAsText(event.target.files[0], "UTF-8")
-            reader.onload = function (evt) {
-                self.section.svg = evt.target.result
-            }
-            reader.onerror = function (evt) {
-                this.showError('File upload failed','Error reading file, try another one.')
-            }
-        },
         // sending updated section data to the server
         updateSection: function(){
             this.update = !this.update
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-            this.axios.patch(process.env.VUE_APP_URL+'section/'+this.section.id,
+            this.axios.patch(process.env.VUE_APP_URL+'subsection/'+this.$route.params.id,
             {
-                title_en: this.section.titleEN,
-                title_fr: this.section.titleFR,
-                svg: this.section.svg,
-                primary: this.section.primary
+                title_en: this.subsection.titleEN,
+                title_fr: this.subsection.titleFR,
+                description_en: this.subsection.descriptionEN,
+                description_fr: this.subsection.descriptionFR
             })
             .then(response => {
-                this.showSuccess('Section was updated', 'Section was updated successfuly.')
+                this.showSuccess('Subsection was updated', 'Subection was updated successfuly.')
             })
             .catch(error => {
                 this.showError('Update failure', 'Something went wrong.')

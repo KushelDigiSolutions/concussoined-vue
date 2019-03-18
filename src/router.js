@@ -3,10 +3,10 @@ import Router from 'vue-router'
 import Login from './views/Login.vue'
 import Sections from './views/Sections.vue'
 import editSection from './views/sections/editSection.vue'
+import editSubsection from './views/sections/editSubsection.vue'
 import editTextWidget from './views/widgets/edit/textcontent.vue'
 import editVideoWidget from './views/widgets/edit/video.vue'
 import editGalleryWidget from './views/widgets/edit/gallery.vue'
-import editSubsectionWidget from './views/widgets/edit/subsection.vue'
 import mediaManager from './views/MediaManager.vue'
 
 Vue.use(Router)
@@ -37,6 +37,12 @@ export default new Router({
       props: true
     },
     {
+      path: '/subsection/:id',
+      name: 'editSubsection',
+      component: editSubsection,
+      props: true
+    },
+    {
       path: '/widget/textcontent/:id',
       name: 'edit-textcontent',
       component: editTextWidget,
@@ -57,8 +63,7 @@ export default new Router({
     {
       path: '/widget/subsection/:id',
       name: 'edit-subsectionwidget',
-      component: editSubsectionWidget,
-      props: true
-    },
+      redirect: '/subsection/:id'
+    }
   ]
 })

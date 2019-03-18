@@ -31,6 +31,9 @@ input[type="text"], input[type="password"], input[type="email"], select, textare
         width:100%;
     }
 }
+textarea {
+    height:auto !important;
+}
 label {
     display:block;
     margin-bottom: 5px;

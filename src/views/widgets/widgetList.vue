@@ -35,7 +35,7 @@
                             <font-awesome-icon icon="pencil-alt" />
                             <span>Edit</span>
                         </button>
-                        <button class="btn btn-red icon">
+                        <button class="btn btn-red icon" :disabled="w.type == 'subsectionwidget'" @click="showError('TODO','That func is not exist')">
                             <font-awesome-icon icon="trash-alt" />
                             <span>Delete</span>
                         </button>
@@ -106,7 +106,15 @@ export default {
                         break;
                 }
                 this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-                this.axios.patch(process.env.VUE_APP_URL+url+'/'+param,{index:index})
+                this.axios.patch(process.env.VUE_APP_URL+url+'/'+widget.id,{index:index})
+            })
+        },
+        showError: function(title, msg) {
+            this.$toast.error({
+                title:title,
+                message:msg,
+                position: 'top right',
+                timeOut: 5000
             })
         }
 	}
