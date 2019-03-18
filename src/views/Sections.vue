@@ -11,22 +11,35 @@
 			<section class="sections-list">
 				<div class="list-group">
 					<div class="list-group-item" v-for="section in sections" :key="section.id">
-						<span class="p-2 d-inline-block">
-							{{section.title}}
-							<template v-if="section.primary == '1'">
-								<sup class="primary">primary</sup>
-							</template>
-						</span>
-						<span class="action">
-							<button class="btn btn-blue icon mr-3" @click="$router.push({name:'editSection', params:{name:section.name}})">
-								<font-awesome-icon icon="pencil-alt" />
-								<span>Edit</span>
-							</button>
-							<button class="btn btn-red icon">
-								<font-awesome-icon icon="trash-alt" />
-								<span>Delete</span>
-							</button>
-						</span>
+						<div>
+							<span class="p-2 d-inline-block">
+								{{section.title}}
+								<template v-if="section.primary == '1'">
+									<sup class="primary">primary</sup>
+								</template>
+							</span>
+							<span class="action">
+								<button class="btn btn-blue icon mr-4" @click="$router.push({name:'editSection', params:{name:section.name}})">
+									<font-awesome-icon icon="pencil-alt" />
+									<span>Edit</span>
+								</button>
+							</span>
+						</div>
+						<div class="list-group mt-4 mb-4" v-if="section.subsections.length > 0">
+							<div class="list-group-item" v-for="subsection in section.subsections" :key="subsection.id">
+								<div>
+									<span class="p-2 d-inline-block">
+										{{subsection.title_en}}
+									</span>
+									<span class="action">
+										<button class="btn btn-blue icon mr-1" @click="$router.push({name:'editSubsection', params:{id:subsection.id}})">
+											<font-awesome-icon icon="pencil-alt" />
+											<span>Edit</span>
+										</button>
+									</span>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</section>

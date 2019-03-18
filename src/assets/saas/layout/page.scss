@@ -24,11 +24,15 @@
     }
     .sections-list {
         width:100%;
-        .list-group-item {
+        margin-bottom:3em;
+        .list-group-item > div:not(.list-group) {
             display:flex;
             flex-direction:row;
             justify-content: flex-start;
             align-items: center;
+        }
+        .list-group-item .list-group .list-group-item {
+            background:#f4f4f4;
         }
         .action {
             margin-left: auto;

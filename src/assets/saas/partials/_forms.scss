@@ -33,6 +33,7 @@ input[type="text"], input[type="password"], input[type="email"], select, textare
 }
 textarea {
     height:auto !important;
+    resize: none;
 }
 label {
     display:block;

@@ -37,6 +37,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-6">
+                        <label for="parent">Parent Section:</label>
+                        <select class="full-width" name="parent" v-model="subsection.parent_id">
+                            <option :value="section.id" v-for="section in sections" :key="section.id">{{section.title}}</option>
+                        </select>
+                    </div>
+                </div>
 			</section>
             <header class="full-width mt-3">
 				<h1>Edit Widgets</h1>
@@ -75,7 +83,8 @@ export default {
     },
 	data: function () {
 		return {
-			ps:null,
+            ps:null,
+            sections:[],
             subsection:
                 {
                     parent_id: '',
@@ -90,11 +99,12 @@ export default {
 		}
 	},
 	mounted: function() {
-        this.getSection()
+        this.getSubsection()
+        this.getSections()
 	},
 	methods: {
-        // getting section data
-		getSection: function() {
+        // getting subsection data
+		getSubsection: function() {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
 			this.axios.get(process.env.VUE_APP_URL+'subsection/all/'+this.$route.params.id)
 			.then(response => {
@@ -102,7 +112,7 @@ export default {
                 this.subsection.titleFR = response.data.title_fr
                 this.subsection.descriptionEN = response.data.description_en
                 this.subsection.descriptionFR = response.data.description_fr
-                this.subsection.parent_id = response.data.id
+                this.subsection.parent_id = response.data.section_id
                 this.subsection.name = response.data.name
                 this.axios.get(process.env.VUE_APP_URL+'subsection/'+this.subsection.name, {params:{name:this.subsection.name,language:'en'}})
                 .then(response => {
@@ -110,6 +120,16 @@ export default {
                 })
             })
         },
+        // getting sections list
+        getSections: function() {
+			this.axios.get(process.env.VUE_APP_URL+'sections', {params:{language: 'en'}})
+			.then(response => {
+				this.sections = response.data
+				this.$nextTick(() => {
+					this.perfectScrollInit()
+				})
+			})
+		},
         // making widgets array
         prepareComponents: function(data){
 			if(data.accordions && data.accordions.length > 0) {
@@ -171,7 +191,8 @@ export default {
                 title_en: this.subsection.titleEN,
                 title_fr: this.subsection.titleFR,
                 description_en: this.subsection.descriptionEN,
-                description_fr: this.subsection.descriptionFR
+                description_fr: this.subsection.descriptionFR,
+                section_id: this.subsection.parent_id
             })
             .then(response => {
                 this.showSuccess('Subsection was updated', 'Subection was updated successfuly.')

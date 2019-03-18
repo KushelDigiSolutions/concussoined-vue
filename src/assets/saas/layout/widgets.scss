@@ -151,3 +151,20 @@
         }
     }
 }
+.edit-widget.elemets {
+    .list-group span > .row {
+        border-radius: 0.25rem;
+        border: 1px solid rgba(0,0,0,.125);
+        cursor: move;
+    }
+    // .list-group span > .row:nth-child(odd) {
+    //     background: rgba(0,0,0,.05);
+    // }
+}
+.flip-list-move {
+    transition: transform 0.5s;
+}
+.sortable-ghost {
+    opacity: 0.5;
+    background:$form-input-placeholder;
+}
