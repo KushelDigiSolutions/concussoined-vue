@@ -70,7 +70,13 @@
                 <div class="row">
                     <div class="col-12">
                         <label>Server Images</label>
-                        <draggable v-model="images" :options="{group:{ name:'widgets', store: null,  pull:'clone' }}" @start="drag=true" @end="drag=false" class="img-list-group">
+                        <draggable
+                            v-model="images"
+                            :options="{group:{ name:'widgets', store: null,  pull:'clone' }}"
+                            @start="drag=true"
+                            @end="drag=false"
+                            @add="checkMove"
+                            class="img-list-group">
                             <transition-group type="transition" :name="'flip-list'" class="scroll">
                                 <div class="list-group-item" v-for="image in images" :key="image.id" @click="imgsrc = image.url; $modal.show('imgviewer')">
                                     <img :src="image.thumb_url">
@@ -179,6 +185,7 @@ export default {
             widget:[],
             images_en:[],
             images_fr:[],
+            delImages:[],
             images:[],
             imgsrc:'',
             image:null,
@@ -193,6 +200,9 @@ export default {
 	methods: {
         // getting widget
 		getWidgetData: function() {
+            this.images_en = []
+            this.images_fr = []
+            this.delImages = []
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.get(process.env.VUE_APP_URL+'gallery/'+this.$route.params.id)
             .then(response => {
@@ -227,24 +237,35 @@ export default {
                 title_fr: this.widget.title_fr
             })
             .then(response => {
+                this.delImages.map(img => {
+                    this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+                    this.axios.delete(process.env.VUE_APP_URL+'image/'+img.id+'/gallery/'+this.$route.params.id)
+                })
                 this.images_en.map((img, index) => {
                     index ++
+                    let method = img.pivot ? 'patch' : 'post'
                     this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-                    this.axios.patch(process.env.VUE_APP_URL+'image/'+img.id+'/gallery/'+this.$route.params.id, {
-                        language: img.pivot.language,
+                    this.axios[method](process.env.VUE_APP_URL+'image/'+img.id+'/gallery/'+this.$route.params.id, {
+                        language: 'en',
                         index: index
                     })
                 })
                 this.images_fr.map((img, index) => {
                     index ++
+                    let method = img.pivot ? 'patch' : 'post'
                     this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
-                    this.axios.patch(process.env.VUE_APP_URL+'image/'+img.id+'/gallery/'+this.$route.params.id, {
-                        language: img.pivot.language,
+                    this.axios[method](process.env.VUE_APP_URL+'image/'+img.id+'/gallery/'+this.$route.params.id, {
+                        language: 'fr',
                         index: index
                     })
                 })
                 this.showSuccess('Widget was Updated', 'Widget data was updated successfuly.')
+                this.getWidgetData()
             })
+        },
+        //adding removed image to the delete list
+        checkMove (evt) {
+            this.delImages.push(this.images[evt.newIndex])
         },
         // image uploader callbacks
         inputFile: function(newFile, oldFile) {

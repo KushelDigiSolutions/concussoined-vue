@@ -7,6 +7,7 @@ import editTextWidget from './views/widgets/edit/textcontent.vue'
 import editVideoWidget from './views/widgets/edit/video.vue'
 import editGalleryWidget from './views/widgets/edit/gallery.vue'
 import editSubsectionWidget from './views/widgets/edit/subsection.vue'
+import mediaManager from './views/MediaManager.vue'
 
 Vue.use(Router)
 
@@ -18,6 +19,11 @@ export default new Router({
       path: '/',
       name: 'sections',
       component: Sections
+    },
+    {
+      path: '/media',
+      name: 'mediaManager',
+      component: mediaManager
     },
     {
       path: '/login',
