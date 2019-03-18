@@ -37,7 +37,7 @@
                 <div class="row" id="widgetList">
                     <div class="col-6">
                         <label>Images(EN):</label>
-                        <draggable v-model="images_en" group="widgets" @start="drag=true" @end="drag=false" class="list-group row-list">
+                        <draggable v-model="images_en" group="widgets" @start="drag=true" @end="drag=false" class="list-group row-list media-manager">
                             <transition-group type="transition" :name="'flip-list'">
                                 <div class="list-group-item" v-for="image in images_en" :key="image.id" @click="imgsrc = image.url; $modal.show('imgviewer')">
                                     <img :src="image.thumb_url">
@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-6">
                         <label>Images(FR):</label>
-                        <draggable v-model="images_fr" group="widgets" @start="drag=true" @end="drag=false" class="list-group row-list">
+                        <draggable v-model="images_fr" group="widgets" @start="drag=true" @end="drag=false" class="list-group row-list for-delete">
                             <transition-group type="transition" :name="'flip-list'">
                                 <div class="list-group-item" v-for="image in images_fr" :key="image.id" @click="imgsrc = image.url; $modal.show('imgviewer')">
                                     <img :src="image.thumb_url">

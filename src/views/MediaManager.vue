@@ -1,26 +1,40 @@
 <template>
-	<main id="pagecontent">
-		<div class="scroll">
+	<main id="pagecontent" class="media">
 			<header class="full-width mt-4">
-				<h1>Add Image (drag and drop image from the list)</h1>
-                <div class="actions">
-                    <button class="btn icon mr-3" @click="$modal.show('imguploader')">
-                        <font-awesome-icon icon="upload" />
-                        <span>Upload New Image</span>
-                    </button>
-                </div>
+				<h1>Image manager</h1>
 			</header>
-            <section class="edit-widget mb-5" v-if="images_en">
+            <section class="edit-widget mm mb-5" v-if="images">
                 <div class="row">
-                    <div class="col-12">
-                        <label>Server Images</label>
-                        <draggable v-model="images" :options="{group:{ name:'widgets', store: null,  pull:'clone' }}" @start="drag=true" @end="drag=false" class="img-list-group">
+                    <div class="col-7">
+                        <draggable v-model="images" :options="{group:{ name:'widgets', store: null }}" @start="drag=true" @end="drag=false" class="img-list-group">
                             <transition-group type="transition" :name="'flip-list'" class="scroll">
                                 <div class="list-group-item" v-for="image in images" :key="image.id" @click="imgsrc = image.url; $modal.show('imgviewer')">
                                     <img :src="image.thumb_url">
                                 </div>
                             </transition-group>
                         </draggable>
+                    </div>
+                    <div class="col-5">
+                        <div class="actions mb-5">
+                            <button class="btn icon mr-3" @click="$modal.show('imguploader')">
+                                <font-awesome-icon icon="upload" />
+                                <span>Upload New Image</span>
+                            </button>
+                        </div>
+                        <label>Images for delete</label>
+                        <draggable v-model="delImages" :options="{group:{ name:'widgets', store: null }}" @start="drag=true" @end="drag=false" class="list-group row-list">
+                            <transition-group type="transition" :name="'flip-list'">
+                                <div class="list-group-item" v-for="image in delImages" :key="image.id" @click="imgsrc = image.url; $modal.show('imgviewer')">
+                                    <img :src="image.thumb_url">
+                                </div>
+                            </transition-group>
+                        </draggable>
+                        <div class="actions mt-5">
+                            <button class="btn btn-red icon" @click="deleteImages()">
+                                <font-awesome-icon icon="trash-alt" />
+                                <span>Delete Selected Images</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 			</section>
@@ -83,7 +97,6 @@
                     </div>
                 </div>
             </modal>
-		</div>
 	</main>
 </template>
 
@@ -94,6 +107,7 @@ import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus, faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import draggable from 'vuedraggable'
 import VModal from 'vue-js-modal'
 import FileUpload from 'vue-upload-component'
 
@@ -109,14 +123,23 @@ Vue.use(VModal, { componentName: "modal" })
 export default {
     name: 'mediaManager',
     components: {
+        draggable,
         FileUpload
+    },
+    computed: {
+        uploadCount() {
+            return this.files.length
+        }
     },
 	data: function () {
 		return {
 			psgal:null,
             images: [],
+            delImages:[],
             image:null,
+            imgsrc:'',
             files:[],
+            uploaded:0,
             upload_url:process.env.VUE_APP_URL+'image'
 		}
 	},
@@ -126,7 +149,10 @@ export default {
 	methods: {
 		// getting all images available
         getImages: function() {
+            this.delImages = []
             this.images = []
+            this.files = []
+            this.uploaded = 0
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.get(process.env.VUE_APP_URL+'images')
             .then(response => {
@@ -155,11 +181,24 @@ export default {
                 // Uploaded successfully
                 if (newFile.success !== oldFile.success) {
                     console.log('success')
-                    this.$modal.hide('imguploader')
-                    this.showSuccess('Image upload', 'All images have been uploaded')
-                    this.getImages()
+                    this.uploaded ++
+                    if(this.uploaded == this.uploadCount) {
+                        this.$modal.hide('imguploader')
+                        this.showSuccess('Image upload', 'All images have been uploaded')
+                        this.getImages()
+                    }
                 }
             }
+        },
+        deleteImages: function() {
+            this.delImages.map(img => {
+                this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+                this.axios.delete(process.env.VUE_APP_URL+'image/'+img.id)
+            })
+            this.$nextTick(() => {
+                this.showSuccess('Delete images', 'Selected images was removed from server.')
+                this.getImages()
+            })
         },
         showSuccess: function(title, msg) {
             this.$toast.success({

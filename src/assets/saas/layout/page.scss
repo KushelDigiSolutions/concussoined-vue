@@ -4,6 +4,9 @@
     justify-content: flex-start;
     align-items: flex-start;
     position: relative;
+    &.media {
+        padding:3rem;
+    }
     .scroll {
         padding:3rem;
     }
