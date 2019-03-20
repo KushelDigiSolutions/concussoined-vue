@@ -3,7 +3,7 @@
         <div class="logo"></div>
         <div class="signin">
             <input class="mb-4" :class="{error: errEmail}" type="text" name="email" v-model="email" placeholder="Email">
-            <input class="mb-4" :class="{error: errPassword}" type="password" name="password" v-model="password" placeholder="Password">
+            <input class="mb-4" :class="{error: errPassword}" type="password" name="password" v-model="password" placeholder="Password" @keyup.enter="validateForm()">
             <button class="btn mt-1" @click="validateForm()">Login</button>
         </div>
     </main>

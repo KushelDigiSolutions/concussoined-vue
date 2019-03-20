@@ -1,6 +1,6 @@
 <template>
 	<main class="pagecontent">
-		<div class="scroll">
+		<div class="scroll" v-if="!loading">
 			<header class="full-width">
 				<h1>Edit Subsection</h1>
                 <div class="actions">
@@ -55,6 +55,7 @@
 			</header>
             <widgetlist :widgets="widgets" :update="update"/>
 		</div>
+        <div class="loading" v-if="loading"><img src="/img/loading.gif"></div>
 	</main>
 </template>
 
@@ -95,7 +96,8 @@ export default {
                     descriptionFR: ''
                 },
             widgets:[],
-            update:false
+            update:false,
+            loading:true
 		}
 	},
 	mounted: function() {
@@ -161,7 +163,8 @@ export default {
 					a.type = 'textcontent'
 					this.widgets.push(a)
 				})
-			}
+            }
+            this.loading = false
 			this.$nextTick(() => {
 				this.sortComponents()
 			})

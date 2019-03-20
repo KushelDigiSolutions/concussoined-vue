@@ -1,6 +1,6 @@
 <template>
     <main class="pagecontent">
-		<div class="scroll">
+		<div class="scroll" v-if="!loading">
 			<header class="full-width">
 				<h1>Edit Gallery</h1>
                 <div class="actions">
@@ -146,6 +146,7 @@
                 </div>
             </modal>
 		</div>
+        <div class="loading" v-if="loading"><img src="/img/loading.gif"></div>
     </main>
 </template>
 <script>
@@ -191,7 +192,8 @@ export default {
             image:null,
             files:[],
             upload_url:process.env.VUE_APP_URL+'image',
-            prevRoute: null
+            prevRoute: null,
+            loading: true
 		}
 	},
 	mounted: function() {
@@ -223,6 +225,7 @@ export default {
             this.axios.get(process.env.VUE_APP_URL+'images')
             .then(response => {
                 this.images = response.data
+                this.loading = false
                 this.$nextTick(() => {
                     this.perfectScrollInit()
                     this.perfectScrollInitGal()

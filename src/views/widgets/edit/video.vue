@@ -1,6 +1,6 @@
 <template>
     <main class="pagecontent">
-		<div class="scroll">
+		<div class="scroll" v-if="!loading">
 			<header class="full-width">
 				<h1>Edit Widget</h1>
                 <div class="actions">
@@ -46,6 +46,7 @@
                 </div>
 			</section>
 		</div>
+        <div class="loading" v-if="loading"><img src="/img/loading.gif"></div>
     </main>
 </template>
 <script>
@@ -79,7 +80,8 @@ export default {
 		return {
             ps:null,
             widget:[],
-            prevRoute: null
+            prevRoute: null,
+            loading:true
 		}
 	},
 	mounted: function() {
@@ -92,6 +94,7 @@ export default {
             this.axios.get(process.env.VUE_APP_URL+'video/'+this.$route.params.id)
             .then(response => {
                 this.widget = response.data
+                this.loading = false
             })
         },
         // sending data to the server

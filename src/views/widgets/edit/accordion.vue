@@ -1,6 +1,6 @@
 <template>
     <main class="pagecontent">
-		<div class="scroll">
+		<div class="scroll" v-if="!loading">
 			<header class="full-width">
 				<h1>Edit Widget</h1>
                 <div class="actions">
@@ -62,6 +62,7 @@
                 </draggable>
 			</section>
 		</div>
+        <div class="loading" v-if="loading"><img src="/img/loading.gif"></div>
     </main>
 </template>
 <script>
@@ -89,7 +90,8 @@ export default {
 		return {
             ps:null,
             widget:[],
-            elements:[]
+            elements:[],
+            loading:true
 		}
 	},
 	mounted: function() {
@@ -110,6 +112,7 @@ export default {
             this.axios.get(process.env.VUE_APP_URL+'accordion/'+this.$route.params.id+'/accordion_elements')
             .then(response => {
                 this.elements = response.data
+                this.loading = false
                 this.$nextTick(() => {
 					this.perfectScrollInit()
 				})

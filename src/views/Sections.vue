@@ -1,6 +1,6 @@
 <template>
 	<main id="pagecontent">
-		<div class="scroll">
+		<div class="scroll" v-if="!loading">
 			<header>
 				<h1>Sections</h1>
 				<!-- <a href="#" class="btn icon">
@@ -44,6 +44,7 @@
 				</div>
 			</section>
 		</div>
+		<div class="loading" v-if="loading"><img src="/img/loading.gif"></div>
 	</main>
 </template>
 
@@ -68,7 +69,8 @@ export default {
 	data: function () {
 		return {
 			ps:null,
-			sections: []
+			sections: [],
+			loading:true
 		}
 	},
 	mounted: function() {
@@ -79,6 +81,7 @@ export default {
 			this.axios.get(process.env.VUE_APP_URL+'sections', {params:{language: 'en'}})
 			.then(response => {
 				this.sections = response.data
+				this.loading = false
 				this.$nextTick(() => {
 					this.perfectScrollInit()
 				})

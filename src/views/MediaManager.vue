@@ -1,9 +1,9 @@
 <template>
 	<main id="pagecontent" class="media">
-			<header class="full-width mt-4">
+			<header class="full-width mt-4" v-if="!loading">
 				<h1>Image manager</h1>
 			</header>
-            <section class="edit-widget mm mb-5" v-if="images">
+            <section class="edit-widget mm mb-5" v-if="!loading">
                 <div class="row">
                     <div class="col-7">
                         <draggable v-model="images" :options="{group:{ name:'widgets', store: null }}" @start="drag=true" @end="drag=false" class="img-list-group">
@@ -97,6 +97,7 @@
                     </div>
                 </div>
             </modal>
+            <div class="loading" v-if="loading"><img src="/img/loading.gif"></div>
 	</main>
 </template>
 
@@ -140,7 +141,8 @@ export default {
             imgsrc:'',
             files:[],
             uploaded:0,
-            upload_url:process.env.VUE_APP_URL+'image'
+            upload_url:process.env.VUE_APP_URL+'image',
+            loading: true
 		}
 	},
 	mounted: function() {
@@ -157,6 +159,7 @@ export default {
             this.axios.get(process.env.VUE_APP_URL+'images')
             .then(response => {
                 this.images = response.data
+                this.loading = false
                 this.$nextTick(() => {
                     this.perfectScrollInitGal()
                 })
