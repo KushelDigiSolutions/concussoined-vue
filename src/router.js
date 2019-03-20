@@ -9,6 +9,7 @@ import editVideoWidget from './views/widgets/edit/video.vue'
 import editGalleryWidget from './views/widgets/edit/gallery.vue'
 import editAccordionWidget from './views/widgets/edit/accordion.vue'
 import mediaManager from './views/MediaManager.vue'
+import editSymptom from './views/symptoms/editSymptoms.vue'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
       path: '/media',
       name: 'mediaManager',
       component: mediaManager
+    },
+    {
+      path: '/symptoms',
+      name: 'symptoms',
+      component: editSymptom
     },
     {
       path: '/login',

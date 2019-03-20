@@ -6,9 +6,15 @@
             <nav>
                 <ul>
                     <li>
-                        <a href="#" class="nav-link" :class="{'active': $route.name != 'mediaManager'}" @click="$router.push({name:'sections'})">
+                        <a href="#" class="nav-link" :class="{'active': $route.name != 'mediaManager' && $route.name != 'symptoms'}" @click="$router.push({name:'sections'})">
                             <font-awesome-icon icon="list-alt" />
                             Sections
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" :class="{'active': $route.name == 'symptoms'}" @click="$router.push({name:'symptoms'})">
+                            <font-awesome-icon icon="sitemap" />
+                            Symptoms
                         </a>
                     </li>
                     <li>
@@ -18,12 +24,6 @@
                         </a>
                     </li>
                     <!--<li>
-                        <a href="#" class="nav-link">
-                            <font-awesome-icon icon="sitemap" />
-                            Menu
-                        </a>
-                    </li>
-                     <li>
                         <a href="#" class="nav-link">
                             <font-awesome-icon icon="users" />
                             Users
