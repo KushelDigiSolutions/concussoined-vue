@@ -2,11 +2,11 @@
     <section id="sidebar">
         <div class="logo"></div>
         <div class="nav-block">
-            <div class="block-title">App</div>
+            <div class="block-title">App Content</div>
             <nav>
                 <ul>
                     <li>
-                        <a href="#" class="nav-link" :class="{'active': $route.name != 'mediaManager' && $route.name != 'symptoms'}" @click="$router.push({name:'sections'})">
+                        <a href="#" class="nav-link" :class="{'active': $route.name != 'mediaManager' && $route.name != 'symptoms' && $route.name != 'addAdmin'}" @click="$router.push({name:'sections'})">
                             <font-awesome-icon icon="list-alt" />
                             Sections
                         </a>
@@ -23,12 +23,19 @@
                             Media manager
                         </a>
                     </li>
-                    <!--<li>
-                        <a href="#" class="nav-link">
-                            <font-awesome-icon icon="users" />
-                            Users
+                </ul>
+            </nav>
+        </div>
+        <div class="nav-block">
+            <div class="block-title">Settings</div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="#" class="nav-link" :class="{'active': $route.name == 'addAdmin'}" @click="$router.push({name:'addAdmin'})">
+                            <font-awesome-icon icon="user" />
+                            Add Administrator
                         </a>
-                    </li> -->
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -37,10 +44,10 @@
 <script>
 import Vue from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faListAlt, faCubes, faSitemap, faUsers, faImages } from '@fortawesome/free-solid-svg-icons'
+import { faListAlt, faCubes, faSitemap, faUser, faImages } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faListAlt, faCubes, faSitemap, faUsers, faImages)
+library.add(faListAlt, faCubes, faSitemap, faUser, faImages)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
