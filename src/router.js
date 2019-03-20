@@ -11,6 +11,7 @@ import editAccordionWidget from './views/widgets/edit/accordion.vue'
 import mediaManager from './views/MediaManager.vue'
 import editSymptom from './views/Symptoms.vue'
 import addAdmin from './views/AddAdmin.vue'
+import changePassword from './views/ChangePassword.vue'
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
       path: '/settings/admin',
       name: 'addAdmin',
       component: addAdmin
+    },
+    {
+      path: '/settings/password',
+      name: 'changePassword',
+      component: changePassword
     },
     {
       path: '/media',
