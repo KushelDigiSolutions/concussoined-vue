@@ -8,6 +8,7 @@ import editTextWidget from './views/widgets/edit/textcontent.vue'
 import editVideoWidget from './views/widgets/edit/video.vue'
 import editGalleryWidget from './views/widgets/edit/gallery.vue'
 import editAccordionWidget from './views/widgets/edit/accordion.vue'
+import addTextWidget from './views/widgets/add/textcontent.vue'
 import mediaManager from './views/MediaManager.vue'
 import editSymptom from './views/Symptoms.vue'
 import addAdmin from './views/AddAdmin.vue'
@@ -89,6 +90,12 @@ export default new Router({
       path: '/widget/subsection/:id',
       name: 'edit-subsectionwidget',
       redirect: '/subsection/:id'
-    }
+    },
+    {
+      path: '/widget/add/textcontent',
+      name: 'add-textcontent',
+      component: addTextWidget,
+      props: true
+    },
   ]
 })

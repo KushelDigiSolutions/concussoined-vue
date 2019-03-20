@@ -19,6 +19,7 @@
                     <div class="col-md-12 col-lg-2 mb-3">
                         <label>Icon(SVG):</label>
                         <div class="section-ico clickable">
+                            <button class="sml"><font-awesome-icon icon="ban" v-if="section.svg" @click="section.svg = ''"/></button>
                             <div class="preview" v-html="section.svg"></div>
                             <input type="file" accept=".svg" @change="onFileChanged">
                         </div>
@@ -47,13 +48,65 @@
 			</section>
             <header class="full-width mt-3">
 				<h1>Edit Widgets</h1>
-                <button class="btn icon" @click="showError('TODO','That func is not exist')">
+                <button class="btn icon" @click="$modal.show('addwidget')">
 					<font-awesome-icon icon="plus" />
 					<span>Add New</span>
 				</button>
 			</header>
-            <widgetlist :widgets="widgets" :update="update"/>
+            <widgetlist :widgets="widgets" :update="update" @del="modalDel"/>
 		</div>
+            <modal
+                name="addwidget"
+                transition="nice-modal-fade"
+                classes="addwidget"
+                :reset="true"
+                width="350"
+                height="300"
+                @before-close="files = []">
+                <div class="modal-title">Add New Widget</div>
+                <div class="form-group">
+                    <label for="newwidget">Select type of widget:</label>
+                    <select name="newwidget" id="newwidget" v-model="newWidget">
+                        <option value="textcontent">Text Widget</option>
+                        <option value="videowidget" disabled="disabled">Video Widget</option>
+                        <option value="gallerywidget" disabled="disabled">Gallery Widget</option>
+                        <option value="accordionwidget" disabled="disabled">Accordion Widget</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <button class="btn icon mr-3" @click="addWidget()">
+                        <font-awesome-icon icon="check" />
+                        <span>Confirm</span>
+                    </button>
+                    <button class="btn btn-red icon" @click="$modal.hide('addwidget')">
+                        <font-awesome-icon icon="ban" />
+                        <span>Cancel</span>
+                    </button>
+                </div>
+            </modal>
+            <modal
+                name="delwidget"
+                transition="nice-modal-fade"
+                classes="addwidget"
+                :reset="true"
+                width="350"
+                height="200"
+                @before-close="files = []">
+                <div class="modal-title">Delete Widget</div>
+                <div class="form-group">
+                    <label for="newwidget text-center">Are you sure?</label>
+                </div>
+                <div class="actions">
+                    <button class="btn icon mr-3" @click="deleteWidget()">
+                        <font-awesome-icon icon="check" />
+                        <span>Confirm</span>
+                    </button>
+                    <button class="btn btn-red icon" @click="$modal.hide('delwidget')">
+                        <font-awesome-icon icon="ban" />
+                        <span>Cancel</span>
+                    </button>
+                </div>
+            </modal>
         <div class="loading" v-if="loading"><img src="/img/loading.gif"></div>
 	</main>
 </template>
@@ -63,19 +116,19 @@ import Vue from "vue"
 import CxltToastr from 'cxlt-vue2-toastr'
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSyncAlt, faBan } from '@fortawesome/free-solid-svg-icons'
+import { faSyncAlt, faBan, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
+import VModal from 'vue-js-modal'
 import widgetlist from '../widgets/widgetList'
 
-library.add(faSyncAlt, faBan)
+library.add(faSyncAlt, faBan, faCheck)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 
 Vue.use(CxltToastr)
-
+Vue.use(VModal, { componentName: "modal" })
 export default {
     name: 'editSection',
     components: {
@@ -94,6 +147,11 @@ export default {
                     primary: false
                 },
             widgets:[],
+            newWidget: 'textcontent',
+            delWidget:{
+                id:'',
+                type:''
+            },
             update:false,
             loading: true
 		}
@@ -104,6 +162,11 @@ export default {
 	methods: {
         // getting section data
 		getSection: function() {
+            this.section.titleEN = ''
+            this.section.svg = ''
+            this.section.id = ''
+            this.section.name = ''
+            this.section.primary = false
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
 			this.axios.get(process.env.VUE_APP_URL+'section/'+this.$route.params.name, {params:{name:this.$route.params.name,language:'en'}})
 			.then(response => {
@@ -121,6 +184,7 @@ export default {
         },
         // making widgets array
         prepareComponents: function(data){
+            this.widgets = []
 			if(data.accordions && data.accordions.length > 0) {
 				data.accordions.map(a => {
 					a.type = 'accordionwidget'
@@ -201,6 +265,45 @@ export default {
             .catch(error => {
                 this.showError('Update failure', 'Something went wrong.')
             })
+        },
+        addWidget: function() {
+            this.$router.push({path:'../widget/add/'+this.newWidget, query:{from:'section',id:this.section.id}})
+        },
+        deleteWidget: function() {
+            var url = ''
+            switch(this.delWidget.type) {
+                case 'textcontent':
+                     url = 'text_content'
+                    break;
+                case 'accordionwidget':
+                    url = 'accordion'
+                    break;
+                case 'gallerywidget':
+                    url = 'gallery'
+                    break;
+                case 'subsectionwidget':
+                    url = 'subsection'
+                    break;
+                case 'videowidget':
+                    url = 'video'
+                    break;
+            }
+            this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+            this.axios.delete(process.env.VUE_APP_URL+url+'/'+this.delWidget.id,
+            {
+                id: this.delWidget.id
+            })
+            .then(response => {
+                this.showSuccess('Widget was deleted', 'Widget was deleted successfuly.')
+                this.$modal.hide('delwidget')
+                this.loading = true
+                this.getSection()
+            })
+        },
+        modalDel: function(type, id) {
+            this.delWidget.type = type
+            this.delWidget.id = id
+            this.$modal.show('delwidget')
         },
         showSuccess: function(title, msg) {
             this.$toast.success({

@@ -54,3 +54,14 @@
           }
     }
 }
+.addwidget {
+    background:$color-white;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding:3em;
+    .modal-title {
+        font-weight:bold;
+    }
+}

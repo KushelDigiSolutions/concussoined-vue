@@ -35,7 +35,7 @@
                             <font-awesome-icon icon="pencil-alt" />
                             <span>Edit</span>
                         </button>
-                        <button class="btn btn-red icon" :disabled="w.type == 'subsectionwidget'" @click="showError('TODO','That func is not exist')">
+                        <button class="btn btn-red icon" :disabled="w.type == 'subsectionwidget'" @click="$emit('del', w.type, w.id)">
                             <font-awesome-icon icon="trash-alt" />
                             <span>Delete</span>
                         </button>
