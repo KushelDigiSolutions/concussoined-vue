@@ -75,7 +75,7 @@
                     <select name="newwidget" id="newwidget" v-model="newWidget">
                         <option value="textcontent">Text Widget</option>
                         <option value="videowidget">Video Widget</option>
-                        <option value="gallerywidget" disabled="disabled">Gallery Widget</option>
+                        <option value="gallerywidget">Gallery Widget</option>
                         <option value="accordionwidget" disabled="disabled">Accordion Widget</option>
                     </select>
                 </div>
