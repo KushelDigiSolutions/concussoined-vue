@@ -9,6 +9,7 @@ import editVideoWidget from './views/widgets/edit/video.vue'
 import editGalleryWidget from './views/widgets/edit/gallery.vue'
 import editAccordionWidget from './views/widgets/edit/accordion.vue'
 import addTextWidget from './views/widgets/add/textcontent.vue'
+import addVideoWidget from './views/widgets/add/video.vue'
 import mediaManager from './views/MediaManager.vue'
 import editSymptom from './views/Symptoms.vue'
 import addAdmin from './views/AddAdmin.vue'
@@ -95,6 +96,12 @@ export default new Router({
       path: '/widget/add/textcontent',
       name: 'add-textcontent',
       component: addTextWidget,
+      props: true
+    },
+    {
+      path: '/widget/add/videowidget',
+      name: 'add-v',
+      component: addVideoWidget,
       props: true
     },
   ]

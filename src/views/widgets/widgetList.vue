@@ -72,6 +72,9 @@ export default {
     watch: {
         update(val) {
             this.updateWidgets()
+        },
+        widgets(val) {
+            this.sectionWidgets = this.widgets
         }
     },
 	data: function () {

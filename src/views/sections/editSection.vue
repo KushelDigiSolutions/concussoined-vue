@@ -47,13 +47,19 @@
                 </div>
 			</section>
             <header class="full-width mt-3">
-				<h1>Edit Widgets</h1>
+                <div>
+                    <h1>Edit Widgets</h1>
+                    <div class="checkboxes pl-1 ml-3">
+                        <input class="form-check-input" type="checkbox" id="wlang" v-model="widgetsLang">
+                        <label class="form-check-label" for="wlang">French</label>
+                    </div>
+                </div>
                 <button class="btn icon" @click="$modal.show('addwidget')">
 					<font-awesome-icon icon="plus" />
 					<span>Add New</span>
 				</button>
 			</header>
-            <widgetlist :widgets="widgets" :update="update" @del="modalDel"/>
+            <widgetlist :widgets="widgets" :update="update" @del="modalDel" v-if="widgets"/>
 		</div>
             <modal
                 name="addwidget"
@@ -68,7 +74,7 @@
                     <label for="newwidget">Select type of widget:</label>
                     <select name="newwidget" id="newwidget" v-model="newWidget">
                         <option value="textcontent">Text Widget</option>
-                        <option value="videowidget" disabled="disabled">Video Widget</option>
+                        <option value="videowidget">Video Widget</option>
                         <option value="gallerywidget" disabled="disabled">Gallery Widget</option>
                         <option value="accordionwidget" disabled="disabled">Accordion Widget</option>
                     </select>
@@ -134,6 +140,11 @@ export default {
     components: {
         widgetlist
     },
+    watch: {
+        widgetsLang(val) {
+            this.widgets = val == false ? this.widgets_en : this.widgets_fr
+        }
+    },
 	data: function () {
 		return {
 			ps:null,
@@ -147,6 +158,9 @@ export default {
                     primary: false
                 },
             widgets:[],
+            widgets_en:[],
+            widgets_fr:[],
+            widgetsLang:false,
             newWidget: 'textcontent',
             delWidget:{
                 id:'',
@@ -167,6 +181,10 @@ export default {
             this.section.id = ''
             this.section.name = ''
             this.section.primary = false
+            this.widgets = [],
+            this.widgets_en = [],
+            this.widgets_fr = [],
+            this.widgetsLang = false
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
 			this.axios.get(process.env.VUE_APP_URL+'section/'+this.$route.params.name, {params:{name:this.$route.params.name,language:'en'}})
 			.then(response => {
@@ -175,53 +193,54 @@ export default {
                 this.section.id = response.data.id
                 this.section.name = response.data.name
                 response.data.primary == '1' ? this.section.primary = true : this.section.primary = false
+                this.prepareComponents(response.data,'en')
                 this.axios.get(process.env.VUE_APP_URL+'section/'+this.$route.params.name, {params:{name:this.$route.params.name,language:'fr'}})
                 .then(response => {
                     this.section.titleFR = response.data.title
+                    this.prepareComponents(response.data,'fr')
+                    this.widgets = this.widgets_en
                 })
-                this.prepareComponents(response.data)
             })
         },
         // making widgets array
-        prepareComponents: function(data){
-            this.widgets = []
+        prepareComponents: function(data,lang){
 			if(data.accordions && data.accordions.length > 0) {
 				data.accordions.map(a => {
 					a.type = 'accordionwidget'
-					this.widgets.push(a)
+					this['widgets_'+lang].push(a)
 				})
 			}
 			if(data.galleries && data.galleries.length > 0) {
 				data.galleries.map(a => {
 					a.type = 'gallerywidget'
-					this.widgets.push(a)
+					this['widgets_'+lang].push(a)
 				})
 			}
 			if(data.subsections && data.subsections.length > 0) {
 				data.subsections.map(a => {
 					a.type = 'subsectionwidget'
-					this.widgets.push(a)
+					this['widgets_'+lang].push(a)
 				})
 			}
 			if(data.videos && data.videos.length > 0) {
 				data.videos.map(a => {
 					a.type = 'videowidget'
-					this.widgets.push(a)
+					this['widgets_'+lang].push(a)
 				})
 			}
 			if(data.text_contents && data.text_contents.length > 0) {
 				data.text_contents.map(a => {
 					a.type = 'textcontent'
-					this.widgets.push(a)
+					this['widgets_'+lang].push(a)
 				})
             }
             this.loading = false
 			this.$nextTick(() => {
-				this.sortComponents()
+				this.sortComponents(lang)
 			})
         },
         // sorting widgets by index prop
-        sortComponents: function(){
+        sortComponents: function(lang){
 			function compare(a,b) {
 				if (a.index < b.index)
 					return -1;
@@ -230,7 +249,7 @@ export default {
 				return 0;
 			}
 
-			this.widgets = this.widgets.sort(compare)
+			this['widgets_'+lang] = this['widgets_'+lang].sort(compare)
 
 			this.$nextTick(() => {
 				this.perfectScrollInit()
