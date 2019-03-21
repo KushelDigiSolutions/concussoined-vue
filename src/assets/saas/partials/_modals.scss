@@ -54,7 +54,7 @@
           }
     }
 }
-.addwidget {
+.addwidget, .editwidget {
     background:$color-white;
     display:flex;
     flex-direction: column;
@@ -63,5 +63,11 @@
     padding:3em;
     .modal-title {
         font-weight:bold;
+    }
+}
+.accordion_text {
+    height:250px;
+    .ck-editor__main > div {
+        height:230px;
     }
 }
