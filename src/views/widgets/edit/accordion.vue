@@ -8,7 +8,7 @@
                         <font-awesome-icon icon="sync-alt" />
                         <span>Update</span>
                     </button>
-                    <button class="btn btn-red icon" @click="$router.go(-1)">
+                    <button class="btn btn-red icon" @click="$router.push({path:prevRoute})">
                         <font-awesome-icon icon="ban" />
                         <span>Cancel</span>
                     </button>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="col-md-12 col-lg-4 v-align-center" style="justify-content:flex-end;">
                                 <span class="action">
-                                    <button class="btn btn-blue icon mr-3"@click="editItem(element)">
+                                    <button class="btn btn-blue icon mr-3" @click="editItem(element)">
                                         <font-awesome-icon icon="pencil-alt" />
                                         <span>Edit</span>
                                     </button>
@@ -177,6 +177,11 @@ export default {
         draggable,
         ckeditor: CKEditor.component
     },
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.prevRoute = from.path
+        })
+    },
 	data: function () {
 		return {
             ps:null,
@@ -204,6 +209,7 @@ export default {
                     'redo'
                 ]
             },
+            prevRoute: null,
             loading:true
 		}
 	},

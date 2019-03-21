@@ -11,6 +11,7 @@ import editAccordionWidget from './views/widgets/edit/accordion.vue'
 import addTextWidget from './views/widgets/add/textcontent.vue'
 import addVideoWidget from './views/widgets/add/video.vue'
 import addGalleryWidget from './views/widgets/add/gallery.vue'
+import addAccordionWidget from './views/widgets/add/accordion.vue'
 import mediaManager from './views/MediaManager.vue'
 import editSymptom from './views/Symptoms.vue'
 import addAdmin from './views/AddAdmin.vue'
@@ -109,6 +110,12 @@ export default new Router({
       path: '/widget/add/gallerywidget',
       name: 'add-gallery',
       component: addGalleryWidget,
+      props: true
+    },
+    {
+      path: '/widget/add/accordionwidget',
+      name: 'add-accordion',
+      component: addAccordionWidget,
       props: true
     },
   ]
