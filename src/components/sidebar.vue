@@ -31,21 +31,28 @@
             <nav>
                 <ul>
                     <li>
-                        <span class="nav-link clickable" :class="{'active': $route.name == 'listAdmin'}" @click="$router.push({name:'listAdmin'})">
+                        <span class="nav-link clickable" :class="{'active': $route.name == 'listAdmin' || $route.name == 'addAdmin'}" @click="$router.push({name:'listAdmin'})">
                             <font-awesome-icon icon="users" />
                             Administrators
                         </span>
                     </li>
-                    <li>
-                        <span class="nav-link clickable" :class="{'active': $route.name == 'addAdmin'}" @click="$router.push({name:'addAdmin'})">
-                            <font-awesome-icon icon="user-plus" />
-                            Add Administrator
-                        </span>
-                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="nav-block">
+            <div class="block-title">Me</div>
+            <nav>
+                <ul>
                     <li>
                         <span class="nav-link clickable" :class="{'active': $route.name == 'changePassword'}" @click="$router.push({name:'changePassword'})">
                             <font-awesome-icon icon="key" />
                             Change Password
+                        </span>
+                    </li>
+                    <li>
+                        <span class="nav-link clickable" @click="userLogout">
+                            <font-awesome-icon icon="sign-out-alt" />
+                            Logout
                         </span>
                     </li>
                 </ul>
@@ -56,10 +63,10 @@
 <script>
 import Vue from 'vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faListAlt, faCubes, faSitemap, faUserPlus, faImages, faKey, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faListAlt, faCubes, faSitemap, faUserPlus, faImages, faKey, faUsers, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faListAlt, faCubes, faSitemap, faUserPlus, faImages, faKey, faUsers)
+library.add(faListAlt, faCubes, faSitemap, faUserPlus, faImages, faKey, faUsers, faSignOutAlt)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
@@ -76,7 +83,11 @@ export default {
 
     },
     methods: {
-
+        userLogout: function() {
+            localStorage.token = ''
+            this.axios.defaults.headers.common['Authorization'] = ''
+            this.$router.push({path:'/login'})
+        }
     }
 }
 </script>

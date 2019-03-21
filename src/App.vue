@@ -1,13 +1,13 @@
 <template>
 	<div class="page">
-		<template v-if="$route.name != 'login'">
+		<template v-if="$route.name != 'login' && $route.name != 'reset'">
 			<pagesidebar/>
 			<section class="content">
 				<pageheader/>
 				<router-view/>
 			</section>
 		</template>
-		<template v-if="$route.name == 'login'">
+		<template v-if="$route.name == 'login' || $route.name == 'reset'">
 			<router-view/>
 		</template>
 	</div>

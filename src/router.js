@@ -18,6 +18,7 @@ import addAdmin from './views/AddAdmin.vue'
 import listAdmin from './views/ListAdmin.vue'
 import changePassword from './views/ChangePassword.vue'
 import NotFound from './views/404.vue'
+import Reset from './views/ResetPwd.vue'
 
 Vue.use(Router)
 
@@ -66,6 +67,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/forgot/*',
+      name: 'reset',
+      component: Reset
     },
     {
       path: '/section/:name',

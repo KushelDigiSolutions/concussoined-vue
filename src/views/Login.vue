@@ -92,7 +92,16 @@ export default {
                 this.errMsg = this.errMsg + 'Email is not valid. '
             }
             if(!this.errEmail) {
-                //TODO
+                this.axios.post(process.env.VUE_APP_URL+'password/forgot', {
+                    email: this.email,
+                    url: window.location.protocol+'//'+window.location.host+'/forgot'
+                })
+                .then(response => {
+                    this.showSuccess('Forgot Password', 'Check your email for the reset password link')
+                })
+                .catch(error => {
+                    this.showError('Action Failure', 'No user with this email')
+                })
             } else { // displaying validation error msg
                 this.showError(this.errTitle, this.errMsg)
             }
@@ -110,8 +119,13 @@ export default {
                     this.showError('Login Failure', 'You are not authorized to access this site')
                 }
             })
-            .catch(error => {
-                this.showError('Login Failure', 'Invalid email or password')
+        },
+        showSuccess: function(title, msg) {
+            this.$toast.success({
+                title:title,
+                message:msg,
+                position: 'top right',
+                timeOut: 5000
             })
         },
         showError: function(title, msg) {

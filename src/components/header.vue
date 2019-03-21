@@ -5,7 +5,7 @@
                 {{user.email}}
             </a>
             <div class="dropdown-menu" aria-labelledby="userMenu">
-                <a class="dropdown-item" href="#" @click="userLogout">Logout</a>
+                <a class="dropdown-item" href="" @click="userLogout">Logout</a>
             </div>
         </div>
     </header>

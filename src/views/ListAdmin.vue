@@ -3,10 +3,26 @@
 		<div class="scroll" v-if="!loading">
 			<header class="full-width">
 				<h1>List of Administrators</h1>
+                <div class="actions">
+                    <button class="btn icon mr-3" @click="$router.push({name:'addAdmin'})">
+                        <font-awesome-icon icon="user-plus" />
+                        <span>Add Administrator</span>
+                    </button>
+                </div>
 			</header>
-            <section class="edit-widget">
+            <section class="sections-list">
                 <ul class="list-group">
-                    <li class="list-group-item" v-for="admin in admins" :key="admin.email">{{admin.email}}</li>
+                    <li class="list-group-item" v-for="admin in admins" :key="admin.email">
+                        <div>
+                            <span class="p-2 d-inline-block">{{admin.email}}</span>
+                            <span class="action">
+                                <button class="btn btn-red icon" @click="deleteAdmin(admin.id)">
+                                    <font-awesome-icon icon="trash-alt" />
+                                    <span>Delete</span>
+                                </button>
+                            </span>
+                        </div>
+                    </li>
                 </ul>
 			</section>
 		</div>
@@ -46,6 +62,17 @@ export default {
             this.axios.get(process.env.VUE_APP_URL+'administrators')
             .then(response => {
                 this.admins = response.data.administrators
+            })
+        },
+        deleteAdmin: function(id) {
+            this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+            this.axios.delete(process.env.VUE_APP_URL+'user/'+id)
+            .then(response => {
+                this.showSuccess('Delete User','User was deleted successfuly')
+                this.getAdmins()
+            })
+            .catch(error => {
+                this.showError('Action Failure', 'You cant delete yourself')
             })
         },
         showSuccess: function(title, msg) {
