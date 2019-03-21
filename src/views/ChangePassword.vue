@@ -12,11 +12,11 @@
                             <input class="full-width" type="password" id="old" v-model="oldPassword">
                         </div>
                         <div class="form-group" >
-                            <label for="new">New password:</label>
+                            <label for="new">New password(at least 6 characters):</label>
                             <input class="full-width" type="password" id="new" v-model="newPassword">
                         </div>
                         <div class="form-group" >
-                            <label for="new">Confirm password:</label>
+                            <label for="new">Confirm password(at least 6 characters):</label>
                             <input class="full-width" type="password" id="new" v-model="confirmPassword">
                         </div>
                         <button class="btn icon mt-3" @click="changePassword()">

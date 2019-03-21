@@ -1,5 +1,5 @@
 <template>
-    <main id="login">
+    <main class="login">
         <div class="logo"></div>
         <div class="signin">
             <input class="mb-4" :class="{error: errEmail}" type="text" name="email" v-model="email" placeholder="Email">

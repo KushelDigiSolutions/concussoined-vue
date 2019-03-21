@@ -2,10 +2,10 @@
     <main class="pagecontent">
 		<div class="scroll" v-if="!loading">
 			<header class="full-width">
-				<h1>Edit Gallery</h1>
+				<h1>Add Gallery</h1>
                 <div class="actions">
                     <button class="btn icon mr-3" @click="updateWidget()">
-                        <font-awesome-icon icon="sync-alt" />
+                        <font-awesome-icon icon="save" />
                         <span>Save</span>
                     </button>
                     <button class="btn btn-red icon" @click="$router.push({path:prevRoute})">
@@ -154,13 +154,13 @@ import Vue from "vue"
 import CxltToastr from 'cxlt-vue2-toastr'
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSyncAlt, faBan, faUpload, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faBan, faUpload, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import draggable from 'vuedraggable'
 import VModal from 'vue-js-modal'
 import FileUpload from 'vue-upload-component'
 
-library.add(faSyncAlt, faBan, faUpload, faPlus)
+library.add(faSave, faBan, faUpload, faPlus)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

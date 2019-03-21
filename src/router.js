@@ -16,6 +16,7 @@ import mediaManager from './views/MediaManager.vue'
 import editSymptom from './views/Symptoms.vue'
 import addAdmin from './views/AddAdmin.vue'
 import changePassword from './views/ChangePassword.vue'
+import NotFound from './views/404.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,13 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    {
+      path: '/404',
+      component: NotFound },
+    {
+      path: '*',
+      redirect: '/404'
+    },
     {
       path: '/',
       name: 'sections',

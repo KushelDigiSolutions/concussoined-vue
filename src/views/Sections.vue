@@ -1,5 +1,5 @@
 <template>
-	<main id="pagecontent">
+	<main class="pagecontent">
 		<div class="scroll" v-if="!loading">
 			<header>
 				<h1>Sections</h1>

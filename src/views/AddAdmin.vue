@@ -12,7 +12,7 @@
                             <input type="text" id="title" v-model="email" placeholder="email@example.com">
                         </div>
                         <button class="btn icon mr-3" @click="register()" v-if="password.length == 0">
-                            <font-awesome-icon icon="plus" />
+                            <font-awesome-icon icon="user-plus" />
                             <span>Register</span>
                         </button>
                         <p class="mt-4" v-if="password.length > 0">New admin password: {{password}}</p>
@@ -28,10 +28,10 @@ import Vue from "vue"
 import CxltToastr from 'cxlt-vue2-toastr'
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faPlus, faBan } from '@fortawesome/free-solid-svg-icons'
+import { faUserPlus, faBan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faPlus, faBan)
+library.add(faUserPlus, faBan)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

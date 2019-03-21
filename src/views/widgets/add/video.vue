@@ -2,10 +2,10 @@
     <main class="pagecontent">
 		<div class="scroll" v-if="!loading">
 			<header class="full-width">
-				<h1>Add Widget</h1>
+				<h1>Add Video</h1>
                 <div class="actions">
                     <button class="btn icon mr-3" @click="updateWidget()">
-                        <font-awesome-icon icon="sync-alt" />
+                        <font-awesome-icon icon="save" />
                         <span>Save</span>
                     </button>
                     <button class="btn btn-red icon" @click="$router.push({path:prevRoute})">
@@ -36,11 +36,11 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label for="url">Url:</label>
-                            <input type="text" id="url" v-model="widget.video" placeholder="Video url">
+                            <input type="text" id="url" v-model="widget.video" placeholder="Youtube video url. ex: https://www.youtube.com/watch?v=tAGnKpE4NCI">
                         </div>
                     </div>
                     <div class="col-6">
-                        <label>Preview:</label>
+                        <label v-if="video_preview.length > 0">Preview:</label>
                         <iframe width="560" height="315" :src="video_preview" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
@@ -54,10 +54,10 @@ import Vue from "vue"
 import CxltToastr from 'cxlt-vue2-toastr'
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSyncAlt, faBan } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faBan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faSyncAlt, faBan)
+library.add(faSave, faBan)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

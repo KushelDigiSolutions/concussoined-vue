@@ -2,10 +2,10 @@
     <main class="pagecontent">
 		<div class="scroll" v-if="!loading">
 			<header class="full-width">
-				<h1>Add Widget</h1>
+				<h1>Add Text Widget</h1>
                 <div class="actions">
                     <button class="btn icon mr-3" @click="saveWidget()">
-                        <font-awesome-icon icon="sync-alt" />
+                        <font-awesome-icon icon="save" />
                         <span>Save</span>
                     </button>
                     <button class="btn btn-red icon" @click="$router.push({path:prevRoute})">
@@ -47,12 +47,12 @@ import Vue from "vue"
 import CxltToastr from 'cxlt-vue2-toastr'
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faSyncAlt, faBan } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faBan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import CKEditor from '@ckeditor/ckeditor5-vue'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
-library.add(faSyncAlt, faBan)
+library.add(faSave, faBan)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

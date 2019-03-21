@@ -8,7 +8,7 @@
                         <font-awesome-icon icon="sync-alt" />
                         <span>Update</span>
                     </button>
-                    <button class="btn btn-red icon" @click="$router.go(-1)">
+                    <button class="btn btn-red icon" @click="$router.push({path:prevRoute})">
                         <font-awesome-icon icon="ban" />
                         <span>Cancel</span>
                     </button>
@@ -59,6 +59,11 @@ Vue.config.productionTip = false
 Vue.use(CxltToastr)
 export default {
     name: 'editSubsection',
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            vm.prevRoute = from.path
+        })
+    },
 	data: function () {
 		return {
             ps:null,
@@ -76,6 +81,7 @@ export default {
                     'redo'
                 ]
             },
+            prevRoute: null,
             loading: false
 		}
 	},

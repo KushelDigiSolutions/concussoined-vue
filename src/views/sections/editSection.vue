@@ -201,6 +201,10 @@ export default {
                     this.widgets = this.widgets_en
                 })
             })
+            .catch(error => {
+                this.showError('Section not exist', 'Cant find section with this name')
+                this.$router.push({name:'sections'})
+            })
         },
         // making widgets array
         prepareComponents: function(data,lang){

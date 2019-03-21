@@ -31,15 +31,15 @@
             <nav>
                 <ul>
                     <li>
-                        <span class="nav-link clickable" :class="{'active': $route.name == 'changePassword'}" @click="$router.push({name:'changePassword'})">
-                            <font-awesome-icon icon="key" />
-                            Change Password
-                        </span>
-                    </li>
-                    <li>
                         <span class="nav-link clickable" :class="{'active': $route.name == 'addAdmin'}" @click="$router.push({name:'addAdmin'})">
                             <font-awesome-icon icon="user" />
                             Add Administrator
+                        </span>
+                    </li>
+                    <li>
+                        <span class="nav-link clickable" :class="{'active': $route.name == 'changePassword'}" @click="$router.push({name:'changePassword'})">
+                            <font-awesome-icon icon="key" />
+                            Change Password
                         </span>
                     </li>
                 </ul>

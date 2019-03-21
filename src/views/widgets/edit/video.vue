@@ -2,7 +2,7 @@
     <main class="pagecontent">
 		<div class="scroll" v-if="!loading">
 			<header class="full-width">
-				<h1>Edit Widget</h1>
+				<h1>Edit Video</h1>
                 <div class="actions">
                     <button class="btn icon mr-3" @click="updateWidget()">
                         <font-awesome-icon icon="sync-alt" />
