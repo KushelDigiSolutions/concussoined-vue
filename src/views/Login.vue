@@ -1,10 +1,20 @@
 <template>
     <main class="login">
         <div class="logo"></div>
-        <div class="signin">
+        <div class="signin" v-if="!forgotPassword">
             <input class="mb-4" :class="{error: errEmail}" type="text" name="email" v-model="email" placeholder="Email">
             <input class="mb-4" :class="{error: errPassword}" type="password" name="password" v-model="password" placeholder="Password" @keyup.enter="validateForm()">
-            <button class="btn mt-1" @click="validateForm()">Login</button>
+            <button class="btn mt-1 mb-3" @click="validateForm()">Login</button>
+            <div class="forgot text-center">
+                <a href="#" id="forgot" @click="forgotPassword = !forgotPassword" v-if="!forgotPassword">Forgot Password?</a>
+            </div>
+        </div>
+        <div class="signin" v-if="forgotPassword">
+            <input class="mb-4" :class="{error: errEmail}" type="text" name="email" v-model="email" placeholder="Email" @keyup.enter="sendPassword()">
+            <button class="btn mt-1 mb-3" @click="sendPassword()">Send Password</button>
+            <div class="forgot text-center">
+                <a href="#" id="forgot" @click="forgotPassword = !forgotPassword" v-if="forgotPassword">Back to login</a>
+            </div>
         </div>
     </main>
 </template>
@@ -26,6 +36,7 @@ export default {
             localStorage: localStorage,
             errEmail: false,
             errPassword: false,
+            forgotPassword: false,
             errTitle: '',
             errMsg: '',
             reg: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
@@ -70,6 +81,18 @@ export default {
                         this.showError('Login Failure', 'Invalid email or password')
                     })
                 }
+            } else { // displaying validation error msg
+                this.showError(this.errTitle, this.errMsg)
+            }
+        },
+        sendPassword: function() {
+            if(this.email == '' || !this.reg.test(this.email)) {
+                this.errEmail = true
+                this.errTitle = 'Send failure'
+                this.errMsg = this.errMsg + 'Email is not valid. '
+            }
+            if(!this.errEmail) {
+                //TODO
             } else { // displaying validation error msg
                 this.showError(this.errTitle, this.errMsg)
             }

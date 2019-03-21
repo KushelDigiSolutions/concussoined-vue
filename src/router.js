@@ -15,6 +15,7 @@ import addAccordionWidget from './views/widgets/add/accordion.vue'
 import mediaManager from './views/MediaManager.vue'
 import editSymptom from './views/Symptoms.vue'
 import addAdmin from './views/AddAdmin.vue'
+import listAdmin from './views/ListAdmin.vue'
 import changePassword from './views/ChangePassword.vue'
 import NotFound from './views/404.vue'
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/',
       name: 'sections',
       component: Sections
+    },
+    {
+      path: '/settings/admins',
+      name: 'listAdmin',
+      component: listAdmin
     },
     {
       path: '/settings/admin',

@@ -15,7 +15,7 @@
                 </div>
 			</header>
 			<section class="edit-section">
-                <div class="row">
+                <div class="row subs">
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group">
                             <label for="title">Title(EN):</label>
@@ -23,7 +23,7 @@
                         </div>
                         <div class="form-group">
                             <label for="desc_en">Subsection Description(EN):</label>
-                            <textarea id="desc_en" class="full-width" v-model="subsection.descriptionEN"></textarea>
+                            <ckeditor :editor="editor" v-model="subsection.descriptionEN" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
@@ -33,7 +33,7 @@
                         </div>
                         <div class="form-group">
                             <label for="desc_en">Subsection Description(FR):</label>
-                            <textarea id="desc_en" class="full-width" v-model="subsection.descriptionFR"></textarea>
+                            <ckeditor :editor="editor" v-model="subsection.descriptionFR" :config="editorConfig"></ckeditor>
                         </div>
                     </div>
                 </div>
@@ -47,14 +47,72 @@
                 </div>
 			</section>
             <header class="full-width mt-3">
-				<h1>Edit Widgets</h1>
-                <button class="btn icon" @click="showError('TODO','That func is not exist')">
+                <div>
+                    <h1>Edit Widgets</h1>
+                    <div class="checkboxes pl-1 ml-3">
+                        <input class="form-check-input" type="checkbox" id="wlang" v-model="widgetsLang">
+                        <label class="form-check-label" for="wlang">French</label>
+                    </div>
+                </div>
+                <button class="btn icon" @click="$modal.show('addwidget')">
 					<font-awesome-icon icon="plus" />
 					<span>Add New</span>
 				</button>
 			</header>
-            <widgetlist :widgets="widgets" :update="update"/>
+            <widgetlist :widgets="widgets" :update="update" @del="modalDel" v-if="widgets"/>
 		</div>
+         <modal
+                name="addwidget"
+                transition="nice-modal-fade"
+                classes="addwidget"
+                :reset="true"
+                width="350"
+                height="300"
+                @before-close="files = []">
+                <div class="modal-title">Add New Widget</div>
+                <div class="form-group">
+                    <label for="newwidget">Select type of widget:</label>
+                    <select name="newwidget" id="newwidget" v-model="newWidget">
+                        <option value="textcontent">Text Widget</option>
+                        <option value="videowidget">Video Widget</option>
+                        <option value="gallerywidget">Gallery Widget</option>
+                        <option value="accordionwidget">Accordion Widget</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <button class="btn icon mr-3" @click="addWidget()">
+                        <font-awesome-icon icon="check" />
+                        <span>Confirm</span>
+                    </button>
+                    <button class="btn btn-red icon" @click="$modal.hide('addwidget')">
+                        <font-awesome-icon icon="ban" />
+                        <span>Cancel</span>
+                    </button>
+                </div>
+            </modal>
+            <modal
+                name="delwidget"
+                transition="nice-modal-fade"
+                classes="addwidget"
+                :reset="true"
+                width="350"
+                height="200"
+                @before-close="files = []">
+                <div class="modal-title">Delete Widget</div>
+                <div class="form-group">
+                    <label for="newwidget text-center">Are you sure?</label>
+                </div>
+                <div class="actions">
+                    <button class="btn icon mr-3" @click="deleteWidget()">
+                        <font-awesome-icon icon="check" />
+                        <span>Confirm</span>
+                    </button>
+                    <button class="btn btn-red icon" @click="$modal.hide('delwidget')">
+                        <font-awesome-icon icon="ban" />
+                        <span>Cancel</span>
+                    </button>
+                </div>
+            </modal>
         <div class="loading" v-if="loading"><img src="/img/loading.gif"></div>
 	</main>
 </template>
@@ -66,7 +124,9 @@ import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faSyncAlt, faBan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
+import CKEditor from '@ckeditor/ckeditor5-vue'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import VModal from 'vue-js-modal'
 import widgetlist from '../widgets/widgetList'
 
 library.add(faSyncAlt, faBan)
@@ -75,12 +135,18 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 
-Vue.use(CxltToastr)
-
+Vue.use(CxltToastr, CKEditor)
+Vue.use(VModal, { componentName: "modal" })
 export default {
     name: 'editSection',
     components: {
-        widgetlist
+        widgetlist,
+        ckeditor: CKEditor.component
+    },
+    watch: {
+        widgetsLang(val) {
+            this.widgets = val == false ? this.widgets_en : this.widgets_fr
+        }
     },
 	data: function () {
 		return {
@@ -96,6 +162,27 @@ export default {
                     descriptionFR: ''
                 },
             widgets:[],
+            widgets_en:[],
+            widgets_fr:[],
+            widgetsLang:false,
+            newWidget: 'textcontent',
+            delWidget:{
+                id:'',
+                type:''
+            },
+            editor: ClassicEditor,
+            editorConfig: {
+                toolbar: [
+                    'bold',
+                    'italic',
+                    'bulletedList',
+                    'numberedList',
+                    'blockQuote',
+                    '|',
+                    'undo',
+                    'redo'
+                ]
+            },
             update:false,
             loading:true
 		}
@@ -107,6 +194,14 @@ export default {
 	methods: {
         // getting subsection data
 		getSubsection: function() {
+            this.subsection.titleEN = ''
+            this.subsection.svg = ''
+            this.subsection.id = ''
+            this.subsection.name = ''
+            this.widgets = [],
+            this.widgets_en = [],
+            this.widgets_fr = [],
+            this.widgetsLang = false
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
 			this.axios.get(process.env.VUE_APP_URL+'subsection/all/'+this.$route.params.id)
 			.then(response => {
@@ -118,7 +213,12 @@ export default {
                 this.subsection.name = response.data.name
                 this.axios.get(process.env.VUE_APP_URL+'subsection/'+this.subsection.name, {params:{name:this.subsection.name,language:'en'}})
                 .then(response => {
-                    this.prepareComponents(response.data)
+                    this.prepareComponents(response.data,'en')
+                    this.axios.get(process.env.VUE_APP_URL+'subsection/'+this.subsection.name, {params:{name:this.subsection.name,language:'fr'}})
+                    .then(response => {
+                        this.prepareComponents(response.data,'fr')
+                        this.widgets = this.widgets_en
+                    })
                 })
             })
         },
@@ -133,40 +233,40 @@ export default {
 			})
 		},
         // making widgets array
-        prepareComponents: function(data){
+        prepareComponents: function(data,lang){
 			if(data.accordions && data.accordions.length > 0) {
 				data.accordions.map(a => {
 					a.type = 'accordionwidget'
-					this.widgets.push(a)
+					this['widgets_'+lang].push(a)
 				})
 			}
 			if(data.galleries && data.galleries.length > 0) {
 				data.galleries.map(a => {
 					a.type = 'gallerywidget'
-					this.widgets.push(a)
+					this['widgets_'+lang].push(a)
 				})
 			}
 			if(data.subsections && data.subsections.length > 0) {
 				data.subsections.map(a => {
 					a.type = 'subsectionwidget'
-					this.widgets.push(a)
+					this['widgets_'+lang].push(a)
 				})
 			}
 			if(data.videos && data.videos.length > 0) {
 				data.videos.map(a => {
 					a.type = 'videowidget'
-					this.widgets.push(a)
+					this['widgets_'+lang].push(a)
 				})
 			}
 			if(data.text_contents && data.text_contents.length > 0) {
 				data.text_contents.map(a => {
 					a.type = 'textcontent'
-					this.widgets.push(a)
+					this['widgets_'+lang].push(a)
 				})
             }
             this.loading = false
 			this.$nextTick(() => {
-				this.sortComponents()
+				this.sortComponents(lang)
 			})
         },
         // sorting widgets by index prop
@@ -203,6 +303,45 @@ export default {
             .catch(error => {
                 this.showError('Update failure', 'Something went wrong.')
             })
+        },
+         addWidget: function() {
+            this.$router.push({path:'../widget/add/'+this.newWidget, query:{from:'section',id:this.section.id}})
+        },
+        deleteWidget: function() {
+            var url = ''
+            switch(this.delWidget.type) {
+                case 'textcontent':
+                     url = 'text_content'
+                    break;
+                case 'accordionwidget':
+                    url = 'accordion'
+                    break;
+                case 'gallerywidget':
+                    url = 'gallery'
+                    break;
+                case 'subsectionwidget':
+                    url = 'subsection'
+                    break;
+                case 'videowidget':
+                    url = 'video'
+                    break;
+            }
+            this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
+            this.axios.delete(process.env.VUE_APP_URL+url+'/'+this.delWidget.id,
+            {
+                id: this.delWidget.id
+            })
+            .then(response => {
+                this.showSuccess('Widget was deleted', 'Widget was deleted successfuly.')
+                this.$modal.hide('delwidget')
+                this.loading = true
+                this.getSection()
+            })
+        },
+        modalDel: function(type, id) {
+            this.delWidget.type = type
+            this.delWidget.id = id
+            this.$modal.show('delwidget')
         },
         showSuccess: function(title, msg) {
             this.$toast.success({
