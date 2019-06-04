@@ -211,6 +211,7 @@ export default {
                 this.subsection.descriptionFR = response.data.description_fr
                 this.subsection.parent_id = response.data.section_id
                 this.subsection.name = response.data.name
+                this.subsection.id = response.data.id
                 this.axios.get(process.env.VUE_APP_URL+'subsection/'+this.subsection.name, {params:{name:this.subsection.name,language:'en'}})
                 .then(response => {
                     this.prepareComponents(response.data,'en')
@@ -305,7 +306,7 @@ export default {
             })
         },
          addWidget: function() {
-            this.$router.push({path:'../widget/add/'+this.newWidget, query:{from:'section',id:this.section.id}})
+            this.$router.push({path:'../widget/add/'+this.newWidget, query:{from:'subsection',id:this.subsection.id}})
         },
         deleteWidget: function() {
             var url = ''
@@ -335,7 +336,7 @@ export default {
                 this.showSuccess('Widget was deleted', 'Widget was deleted successfuly.')
                 this.$modal.hide('delwidget')
                 this.loading = true
-                this.getSection()
+                this.getSubsection()
             })
         },
         modalDel: function(type, id) {
