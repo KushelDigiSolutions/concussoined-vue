@@ -43,6 +43,7 @@ export default {
         }
     },
     beforeMount: function () {
+        console.log('VUE_APP_URL =', process.env.VUE_APP_URL)
         if(this.localStorage.token) { // token validation
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.checkAdmin()
@@ -77,7 +78,7 @@ export default {
                         localStorage.token = 'Bearer ' + response.data.token
                         this.checkAdmin()
                     })
-                    .catch(error => {
+                    .catch(()=> {
                         this.showError('Login Failure', 'Invalid email or password')
                     })
                 }
@@ -96,10 +97,10 @@ export default {
                     email: this.email,
                     url: window.location.protocol+'//'+window.location.host+'/forgot'
                 })
-                .then(response => {
+                .then(()=> {
                     this.showSuccess('Forgot Password', 'Check your email for the reset password link')
                 })
-                .catch(error => {
+                .catch(()=> {
                     this.showError('Action Failure', 'No user with this email')
                 })
             } else { // displaying validation error msg

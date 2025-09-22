@@ -12,7 +12,10 @@ import './assets/saas/app.scss'
 import dotenv from 'dotenv'
 dotenv.config()
 
-
+const tokenMeta = document.querySelector('meta[name="csrf-token"]')
+if (tokenMeta) {
+  axios.defaults.headers.common['X-CSRF-TOKEN'] = tokenMeta.getAttribute('content')
+}
 //ie11 fix
 if (typeof Object.assign != 'function') {
   // Must be writable: true, enumerable: false, configurable: true
@@ -46,7 +49,9 @@ if (typeof Object.assign != 'function') {
 
 Vue.config.productionTip = false
 
-Vue.use(VueAxios, axios, CxltToastr)
+// Vue.use(VueAxios, axios, CxltToastr)
+Vue.use(VueAxios, axios)
+Vue.use(CxltToastr)
 
 
 new Vue({
