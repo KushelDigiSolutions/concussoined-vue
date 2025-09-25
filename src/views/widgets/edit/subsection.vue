@@ -93,7 +93,7 @@ export default {
 		getWidgetData: function() {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.get(process.env.VUE_APP_URL+'subsection/all/'+this.$route.params.id)
-            .then(response => {
+            .then(_ => {
                 this.widget = response.data
                 this.loading = false
             })
@@ -106,7 +106,7 @@ export default {
                 title_fr: this.widget.title_fr,
                 content_fr: this.widget.content_fr
             })
-            .then(response => {
+            .then(_ => {
                 this.showSuccess('Widget was Updated', 'Widget data was updated successfuly.')
             })
         },

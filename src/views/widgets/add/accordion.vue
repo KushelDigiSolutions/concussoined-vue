@@ -76,7 +76,7 @@ export default {
         saveWidget: function(){
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.post(process.env.VUE_APP_URL+'accordion', this.widget)
-            .then(response => {
+            .then(_ => {
                 this.showSuccess('Widget was Saved', 'New accordion was added successfuly.')
                 this.$router.push({path:this.prevRoute})
             })

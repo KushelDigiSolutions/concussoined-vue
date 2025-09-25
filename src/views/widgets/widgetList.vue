@@ -2,7 +2,7 @@
 	<section id="widgetList" v-if="sectionWidgets">
         <draggable v-model="sectionWidgets" group="widgets" @start="drag=true" @end="drag=false" class="list-group">
             <transition-group type="transition" :name="'flip-list'">
-                <div class="list-group-item" v-for="(w, index) in sectionWidgets" :key="index">
+                <div class="list-group-item" v-for="(w, index) in sectionWidgets" :key="w.id || index">
                     <div class="info">
                         <div class="widget-type">
                             <template v-if="w.type == 'textcontent'">
@@ -70,10 +70,10 @@ export default {
         draggable,
     },
     watch: {
-        update(val) {
+        update(_) {
             this.updateWidgets()
         },
-        widgets(val) {
+        widgets(_) {
             this.sectionWidgets = this.widgets
         }
     },

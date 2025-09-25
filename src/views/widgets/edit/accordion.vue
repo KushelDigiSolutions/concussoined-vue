@@ -160,7 +160,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faSyncAlt, faBan, faPencilAlt, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VModal from 'vue-js-modal'
-import CKEditor from '@ckeditor/ckeditor5-vue'
+import CKEditor from '@ckeditor/ckeditor5-vue2'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 library.add(faSyncAlt, faBan, faPencilAlt, faPlus)
@@ -221,7 +221,7 @@ export default {
 		getWidgetData: function() {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.get(process.env.VUE_APP_URL+'accordion/'+this.$route.params.id)
-            .then(response => {
+            .then(_ => {
                 this.widget = response.data
                 this.getElements()
             })
@@ -229,7 +229,7 @@ export default {
 		getElements: function() {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.get(process.env.VUE_APP_URL+'accordion/'+this.$route.params.id+'/accordion_elements')
-            .then(response => {
+            .then(_ => {
                 this.elements = response.data
                 this.loading = false
                 this.$nextTick(() => {
@@ -243,7 +243,7 @@ export default {
                 title_en: this.widget.title_en,
                 title_fr: this.widget.title_fr
             })
-            .then(response => {
+            .then(_ => {
                 this.updateElements()
                 this.showSuccess('Widget was Updated', 'Widget data was updated successfuly.')
             })
@@ -264,7 +264,7 @@ export default {
         deleteItem: function(id) {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.delete(process.env.VUE_APP_URL+'accordion_element/'+id)
-            .then(response => {
+            .then(_ => {
                 this.showSuccess('Element was deleted', 'Element was deleted successfuly.')
                 this.loading = true
                 this.getWidgetData()
@@ -288,7 +288,7 @@ export default {
         addElement: function() {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.post(process.env.VUE_APP_URL+'accordion_element', this.newelement)
-            .then(response => {
+            .then(_ => {
                 this.$modal.hide('addelement')
                 this.newelement.question_en = ''
                 this.newelement.question_fr = ''
@@ -302,7 +302,7 @@ export default {
         saveElement: function() {
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.patch(process.env.VUE_APP_URL+'accordion_element/'+this.editelement.id, this.editelement)
-            .then(response => {
+            .then(_ => {
                 this.$modal.hide('editelement')
                 this.editelement = []
                 this.showSuccess('Element was edited', 'Element was saved successfuly.')

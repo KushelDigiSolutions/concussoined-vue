@@ -207,10 +207,10 @@ export default {
             this.delImages = []
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.get(process.env.VUE_APP_URL+'gallery/'+this.$route.params.id)
-            .then(response => {
+            .then(_ => {
                 this.widget = response.data
                 this.axios.get(process.env.VUE_APP_URL+'gallery/'+this.$route.params.id+'/images')
-                .then(response => {
+                .then(_ => {
                     response.data.map(image => {
                         image.pivot.language == 'en' ? this.images_en.push(image) : this.images_fr.push(image)
                     })
@@ -223,7 +223,7 @@ export default {
             this.images = []
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.get(process.env.VUE_APP_URL+'images')
-            .then(response => {
+            .then(_ => {
                 this.images = response.data
                 this.loading = false
                 this.$nextTick(() => {
@@ -239,7 +239,7 @@ export default {
                 title_en: this.widget.title_en,
                 title_fr: this.widget.title_fr
             })
-            .then(response => {
+            .then(_ => {
                 this.delImages.map(img => {
                     this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
                     this.axios.delete(process.env.VUE_APP_URL+'image/'+img.id+'/gallery/'+this.$route.params.id)
