@@ -1,0 +1,4 @@
+# ESLint ignore file - temporarily ignoring legacy code to allow modern builds
+dist/
+node_modules/
+*.min.js

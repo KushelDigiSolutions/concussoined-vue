@@ -211,7 +211,7 @@ export default {
             this.images = []
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.get(process.env.VUE_APP_URL+'images')
-            .then(response => {
+            .then(_ => {
                 this.images = response.data
                 this.loading = false
                 this.$nextTick(() => {
@@ -224,7 +224,7 @@ export default {
         updateWidget: function(){
             this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
             this.axios.post(process.env.VUE_APP_URL+'gallery', this.widget)
-            .then(response => {
+            .then(_ => {
                 this.delImages.map(img => {
                     this.axios.defaults.headers.common['Authorization'] = localStorage.getItem('token')
                     this.axios.delete(process.env.VUE_APP_URL+'image/'+img.id+'/gallery/'+response.data.id)

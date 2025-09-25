@@ -6,46 +6,29 @@ import VueAxios from 'vue-axios'
 import axios from 'axios'
 import CxltToastr from 'cxlt-vue2-toastr'
 import jQuery from "jquery"
-import 'bootstrap'
+
+// Bootstrap 5 imports
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+
+// Perfect Scrollbar
+import PerfectScrollbar from 'perfect-scrollbar'
+import 'perfect-scrollbar/css/perfect-scrollbar.css'
+
+// Custom styles
 import './assets/saas/app.scss'
-import dotenv from 'dotenv'
-dotenv.config()
+
+// Make global libraries available
+window.$ = window.jQuery = jQuery
+window.PerfectScrollbar = PerfectScrollbar
+Vue.prototype.$PerfectScrollbar = PerfectScrollbar
 
 const tokenMeta = document.querySelector('meta[name="csrf-token"]')
 if (tokenMeta) {
   axios.defaults.headers.common['X-CSRF-TOKEN'] = tokenMeta.getAttribute('content')
 }
-//ie11 fix
-if (typeof Object.assign != 'function') {
-  // Must be writable: true, enumerable: false, configurable: true
-  Object.defineProperty(Object, "assign", {
-    value: function assign(target) { // .length of function is 2
-      'use strict';
-      if (target == null) { // TypeError if undefined or null
-        throw new TypeError('Cannot convert undefined or null to object');
-      }
-
-      var to = Object(target);
-
-      for (var index = 1; index < arguments.length; index++) {
-        var nextSource = arguments[index];
-
-        if (nextSource != null) { // Skip over if undefined or null
-          for (var nextKey in nextSource) {
-            // Avoid bugs when hasOwnProperty is shadowed
-            if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
-              to[nextKey] = nextSource[nextKey];
-            }
-          }
-        }
-      }
-      return to;
-    },
-    writable: true,
-    configurable: true
-  });
-}
+// Modern browsers support Object.assign natively
+// Removed IE11 polyfill for cleaner modern code
 
 Vue.config.productionTip = false
 

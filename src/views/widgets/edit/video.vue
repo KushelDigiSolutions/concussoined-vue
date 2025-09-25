@@ -105,7 +105,7 @@ export default {
                 title: this.widget.title,
                 video: this.widget.video
             })
-            .then(response => {
+            .then(_ => {
                 this.showSuccess('Widget was Updated', 'Widget data was updated successfuly.')
             })
         },

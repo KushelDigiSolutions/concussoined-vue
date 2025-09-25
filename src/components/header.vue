@@ -1,12 +1,12 @@
 <template>
     <header>
         <div class="dropdown">
-            <a href="#" class="nav-link dropdown-toggle" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href="#" class="nav-link dropdown-toggle" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
                 {{user.email}}
             </a>
-            <div class="dropdown-menu" aria-labelledby="userMenu">
-                <a class="dropdown-item" href="" @click="userLogout">Logout</a>
-            </div>
+            <ul class="dropdown-menu" aria-labelledby="userMenu">
+                <li><a class="dropdown-item" href="#" @click.prevent="userLogout">Logout</a></li>
+            </ul>
         </div>
     </header>
 </template>
@@ -20,6 +20,15 @@ export default {
     },
     mounted: function() {
         this.getUser()
+        // Initialize Bootstrap dropdown
+        this.$nextTick(() => {
+            if (window.bootstrap) {
+                const dropdownElementList = document.querySelectorAll('.dropdown-toggle')
+                dropdownElementList.forEach(dropdownToggleEl => {
+                    new window.bootstrap.Dropdown(dropdownToggleEl)
+                })
+            }
+        })
     },
     methods: {
         getUser: function() {

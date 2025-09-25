@@ -49,7 +49,7 @@ import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faSyncAlt, faBan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import CKEditor from '@ckeditor/ckeditor5-vue'
+import CKEditor from '@ckeditor/ckeditor5-vue2'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 
 library.add(faSyncAlt, faBan)
@@ -111,7 +111,7 @@ export default {
                 title_fr: this.widget.title_fr,
                 content_fr: this.widget.content_fr
             })
-            .then(response => {
+            .then(_ => {
                 this.showSuccess('Widget was Updated', 'Widget data was updated successfuly.')
             })
         },
